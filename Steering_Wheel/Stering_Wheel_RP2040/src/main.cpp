@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
 #include <string.h>
 #include <stdlib.h>
 #include <SPI.h>
