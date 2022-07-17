@@ -6,12 +6,13 @@
 #include <string.h>
 
 #include "defines.h"
+#include "mpc4131.h"
 
 unsigned short radioOutputStep = 0;
 
 UART SerialGPS (GPSTX, GPSRX, NC, NC); 
-UART SerialWheel (WHEELTX, WHEELRX, NC, NC); 
 
+MPC4131 radioPot;
 
 TinyGPSPlus gps;
 
@@ -20,19 +21,26 @@ void setup() {
   //DEBUG OVER USB serial
   Serial.begin(9600);
 
-  //starting the serial communication to the wheel
-  SerialWheel.begin(9600);
+  //starting the serial communication to the wheel on UART0
+  Serial1.begin(WHEELBAUD);
   Serial.println("Communication to the wheel started...");
 
-  //gps configuration
+  //gps configuration on UART1
   SerialGPS.begin(GPSBAUD);
   Serial.println("GPS STARTED");
+
+  //Potentiometer startup
+  radioPot.Startup();
+  Serial.println("Potentiometer initialized");
 
   Serial.println("Configuration DONE");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+
+  Serial.println("SON VIVO");
+  delay(1000);
 
   //GPS reading info
   while (SerialGPS.available()){

@@ -1,12 +1,10 @@
-//GPS serial defines
+//GPS serial defines for UART1
 #define GPSBAUD 9600
 #define GPSTX   8
 #define GPSRX   9
 
-//Wheel serial defines
+//Wheel serial defines on UART0
 #define WHEELBAUD 9600
-#define WHEELTX   10
-#define WHEELRX   11
 
 //radio potentiometer
 #define RADIO_MPC4131_CS            27
