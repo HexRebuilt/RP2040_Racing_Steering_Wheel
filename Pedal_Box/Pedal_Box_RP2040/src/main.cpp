@@ -6,45 +6,52 @@
 #include <string.h>
 
 #include "defines.h"
-#include "mpc4131.h"
 
-unsigned short radioOutputStep = 0;
-
-UART SerialGPS (GPSTX, GPSRX, NC, NC); 
-
-MPC4131 radioPot;
-
+//GPS stuff
+UART SerialGPS(GPSTX, GPSRX, NC, NC);
 TinyGPSPlus gps;
 
-void setup() {
-  // put your setup code here, to run once:
-  //DEBUG OVER USB serial
-  Serial.begin(9600);
+//Radio output stuff
+unsigned short radioOutputStep = 0;
+MbedSPI mySPI(CIPO, COPI, SCK);
+#include "mpc4131.h" //functions for the digiral pot
 
-  //starting the serial communication to the wheel on UART0
+
+
+void setup()
+{
+  // put your setup code here, to run once:
+  // DEBUG OVER USB serial
+  Serial.begin(9600);
+  delay(DEFAULTDELAY * 500);
+
+  // starting the serial communication to the wheel on UART0
   Serial1.begin(WHEELBAUD);
   Serial.println("Communication to the wheel started...");
 
-  //gps configuration on UART1
+  // gps configuration on UART1
   SerialGPS.begin(GPSBAUD);
-  Serial.println("GPS STARTED");
+  Serial.println("GPS started...");
 
-  //Potentiometer startup
-  radioPot.Startup();
-  Serial.println("Potentiometer initialized");
-
+  // Digital potentiometer startup
+  pinMode(RADIO_MPC4131_CS, OUTPUT);
+  mySPI.begin();
+  digitalPotWrite(0);
+  Serial.println("SPI initialized..");
   Serial.println("Configuration DONE");
 }
 
-void loop() {
+void loop()
+{
   // put your main code here, to run repeatedly:
 
-  Serial.println("SON VIVO");
-  delay(1000);
+  Serial.println("Testing pot output");
+  TestPOT();
 
-  //GPS reading info
-  while (SerialGPS.available()){
+  // GPS reading info
+  while (SerialGPS.available())
+  {
     gps.encode(SerialGPS.read());
   }
-  
+  delay(DEFAULTDELAY);
 }
