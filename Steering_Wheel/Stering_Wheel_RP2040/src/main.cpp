@@ -19,4 +19,18 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+//Testing writing over SERIAL1
+  Serial.println("testing Serial1");
+  WHEELSERIAL.write("Hi from the wheel!");
+  String message;
+  while (WHEELSERIAL.available())
+  {
+    message.concat( (char) WHEELSERIAL.read() );
+  }
+  
+  Serial.print("Message recieved: ");
+  Serial.println(message);
+  message = "\n";
+    
+  delay(500);
 }

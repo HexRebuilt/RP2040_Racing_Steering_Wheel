@@ -51,15 +51,17 @@ void loop()
 
   //Testing writing over SERIAL1
   Serial.println("testing Serial1");
-  WHEELSERIAL.write("Hi, I'm the pedal Box");
+  WHEELSERIAL.write("Hi from the pedal Box\n");
   String message;
+  message = "\n";
   while (WHEELSERIAL.available())
   {
-    message = (String) WHEELSERIAL.read();
+    message.concat( (char) WHEELSERIAL.read() );
   }
   
   Serial.print("Message recieved: ");
   Serial.println(message);
+  
     
   delay(500);
 
