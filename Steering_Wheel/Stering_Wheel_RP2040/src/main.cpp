@@ -22,15 +22,17 @@ void loop() {
 //Testing writing over SERIAL1
   Serial.println("testing Serial1");
   WHEELSERIAL.write("Hi from the wheel!");
-  String message;
+  String message = "\n";
   while (WHEELSERIAL.available())
   {
     message.concat( (char) WHEELSERIAL.read() );
+    
+    //Serial.print("Message recieved: ");
+    //Serial.println(message);
   }
   
   Serial.print("Message recieved: ");
   Serial.println(message);
-  message = "\n";
     
   delay(500);
 }

@@ -52,6 +52,7 @@ void loop()
   //Testing writing over SERIAL1
   Serial.println("testing Serial1");
   WHEELSERIAL.write("Hi from the pedal Box\n");
+  
   String message;
   message = "\n";
   while (WHEELSERIAL.available())
