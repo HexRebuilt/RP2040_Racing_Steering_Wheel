@@ -27,7 +27,7 @@ void setup()
   delay(DEFAULTDELAY * 500);
 
   // starting the serial communication to the wheel on UART0
-  Serial1.begin(WHEELBAUD);
+  WHEELSERIAL.begin(WHEELBAUD);
   Serial.println("Communication to the wheel started...");
 
   // gps configuration on UART1
@@ -46,8 +46,24 @@ void loop()
 {
   // put your main code here, to run repeatedly:
 
-  Serial.println("Testing pot output");
-  TestPOT();
+  //Serial.println("Testing pot output");
+  //TestPOT();
+
+  //Testing writing over SERIAL1
+  Serial.println("testing Serial1");
+  WHEELSERIAL.write("Hi, I'm the pedal Box");
+  String message;
+  while (WHEELSERIAL.available())
+  {
+    message = (String) WHEELSERIAL.read();
+  }
+  
+  Serial.print("Message recieved: ");
+  Serial.println(message);
+    
+  delay(500);
+
+  
 
   // GPS reading info
   while (SerialGPS.available())

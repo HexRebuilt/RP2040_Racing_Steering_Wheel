@@ -6,9 +6,10 @@
 #define GPSRX   p9
 
 //Wheel serial defines on UART0
-#define WHEELTX   p0
-#define WHEELRX   p1
-#define WHEELBAUD 9600
+#define WHEELTX     p0
+#define WHEELRX     p1
+#define WHEELBAUD   9600
+#define WHEELSERIAL Serial1
 
 //radio potentiometer
 /* SPI PINS are the pins used for SPI 
