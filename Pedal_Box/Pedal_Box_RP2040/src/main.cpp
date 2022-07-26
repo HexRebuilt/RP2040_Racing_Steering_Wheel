@@ -7,6 +7,7 @@
 
 #include "defines.h"
 
+  
 //GPS stuff
 UART SerialGPS(GPSTX, GPSRX, NC, NC);
 TinyGPSPlus gps;
@@ -17,7 +18,7 @@ unsigned short radioOutputStep = 0;
 MbedSPI mySPI(CIPO, COPI, SCK);
 #include "mpc4131.h" //functions for the digiral pot
 
-
+String message;
 
 void setup()
 {
@@ -50,18 +51,20 @@ void loop()
   //TestPOT();
 
   //Testing writing over SERIAL1
-  Serial.println("testing Serial1");
   WHEELSERIAL.write("Hi from the pedal Box\n");
   
-  String message;
   message = "\n";
   while (WHEELSERIAL.available())
   {
     message.concat( (char) WHEELSERIAL.read() );
   }
-  
-  Serial.print("Message recieved: ");
-  Serial.println(message);
+
+  if (message.compareTo("\n"))
+  {
+    Serial.print("Message recieved: ");
+    Serial.println(message);
+  }
+  else{}
   
     
   delay(500);
@@ -81,7 +84,13 @@ void loop()
   Serial.print("gps.time: ");
   Serial.println(gps.time.hour());
 
-  
-  
+  //Writing GPS info to the wheel
+  message = "\n";
+  message.concat("gps.speed:\t");
+  message.concat((int) gps.speed.kmph());
+  message.concat("\n");
+
+ //WHEELSERIAL.write((string) message);
+
   delay(DEFAULTDELAY);
 }

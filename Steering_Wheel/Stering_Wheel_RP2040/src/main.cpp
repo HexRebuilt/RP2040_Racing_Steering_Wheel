@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "defines.h"
+String message;
 
 void setup() {
   // put your setup code here, to run once:
@@ -20,15 +21,14 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 //Testing writing over SERIAL1
-  Serial.println("testing Serial1");
+  //Serial.println("testing Serial1");
   WHEELSERIAL.write("Hi from the wheel!");
-  String message = "\n";
+  
+  //reading stuff over serial
+  message = "\n";
   while (WHEELSERIAL.available())
   {
     message.concat( (char) WHEELSERIAL.read() );
-    
-    //Serial.print("Message recieved: ");
-    //Serial.println(message);
   }
   
   Serial.print("Message recieved: ");

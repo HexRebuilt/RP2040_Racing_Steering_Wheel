@@ -25,12 +25,22 @@ public:
         {
             message.concat((char)WHEELSERIAL.read());
         }
+
+        
+        if (message.compareTo("\n"))
+        {
+            Serial.print("Message recieved: ");
+            Serial.println(message);
+        }
+        else
+        {
+        }
         return message;
     }
 
     void Write(String tobesent)
     {
-        WHEELSERIAL.write( (u_int16_t) tobesent);
+        WHEELSERIAL.write((u_int16_t)tobesent);
     }
 };
 
