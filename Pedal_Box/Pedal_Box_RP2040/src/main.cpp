@@ -10,6 +10,7 @@
 //GPS stuff
 UART SerialGPS(GPSTX, GPSRX, NC, NC);
 TinyGPSPlus gps;
+unsigned int speed, satellites;
 
 //Radio output stuff
 unsigned short radioOutputStep = 0;
@@ -53,5 +54,15 @@ void loop()
   {
     gps.encode(SerialGPS.read());
   }
+
+  Serial.print("gps.speed: ");
+  Serial.println((int) gps.speed.kmph());
+  Serial.print("gps.satellites: ");
+  Serial.println(gps.satellites.value());
+  Serial.print("gps.time: ");
+  Serial.println(gps.time.hour());
+
+  
+  
   delay(DEFAULTDELAY);
 }
