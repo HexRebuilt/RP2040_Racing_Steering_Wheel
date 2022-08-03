@@ -42,6 +42,8 @@
 #define SCK                     p10
 
 //I2C variables for light sensors:
+#define PIN_WIRE_SDA p2
+#define PIN_WIRE_SCL p3
 #define I2C_SDA p2
 #define I2C_SCL p3
 

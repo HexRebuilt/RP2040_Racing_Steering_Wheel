@@ -39,11 +39,27 @@ void spiclear() {
   }
 }*/
 
+void VolumeCount(){
+  volumeEncoder.Steps();
+}
+
+void MenuCount(){
+  menuEncoder.Steps();
+}
+
 void setup()
 {
   // put your setup code here, to run once:
   // DEBUG OVER USB serial
   Serial.begin(9600);
+
+  //attaching interrupts to the pins
+  attachInterrupt(VOLUME_ENCODER_CW, VolumeCount, CHANGE);
+  attachInterrupt(VOLUME_ENCODER_DATA, VolumeCount, CHANGE);
+  attachInterrupt(MENU_ENCODER_CW, MenuCount, CHANGE);
+  attachInterrupt(MENU_ENCODER_DATA, MenuCount, CHANGE);
+
+
   
   // starting the serial communication to the wheel on UART0
   WHEELSERIAL.begin(WHEELBAUD);
