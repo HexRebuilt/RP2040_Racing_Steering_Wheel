@@ -14,10 +14,13 @@
 #define MILLISECONDS_PER_MENU 3000
 
 //NeoPixel led bar
-#define LED_PIN             p7
+#define ONBOARD_LED_PIN     p16
+#define ONBOARD_LED_TYPE    WS2812
+#define ONBOARD_LED_COLOR   RGB
+#define LED_STRYPE_PIN      p7
 #define NUM_LEDS            8
-#define LED_TYPE            WS2812B
-#define COLOR_ORDER         GRB
+#define LED_STRYPE_TYPE     WS2812B
+#define LED_STRYPE_COLOR    GRB
 #define LED_DELAY           5//ms
 #define GREEN_LED_INDEX     4
 #define YELLOW_LED_INDEX    1
@@ -27,19 +30,41 @@
 #define REDLINE_DUTY_CYCLE  75 //to be tested
 #define MINRPM              0 
 #define MAXRPM              7000
-#define RPMDCPIN               //D19 
+//#define RPMDCPIN               //D19 
 
 //LCD spi related constants
 #define LCD_DIN                 p11
 #define LCD_CLK                 p10
 #define LCD_CS                  p9
 #define DIGIT_UPDATE_MS         5
-#define CIPO                        p12
-#define COPI                        p11
-#define SCK                         p10
+#define CIPO_DO_NOT_USE                    p12
+#define COPI                    p11
+#define SCK                     p10
 
 //I2C variables for light sensors:
 #define I2C_SDA p2
 #define I2C_SCL p3
+
+//Encoder pins
+#define VOLUME_ENCODER_CW    p4
+#define VOLUME_ENCODER_DATA  p5
+#define VOLUME_ENCODER_PRESS p6
+#define MENU_ENCODER_CW      p13
+#define MENU_ENCODER_DATA    p14
+#define MENU_ENCODER_PRESS   p15
+
+//Button pins
+#define RADIO_RED     p8
+#define RADIO_BLUE    p12
+#define RADIO_GREEN   p17
+#define RADIO_BLACK   p18
+#define RADIO_BACK    p23
+#define RADIO_NEXT    p24
+//ecu ones
+#define ECU_RED       p19
+#define ECU_YELLOW    p20
+#define ECU_BLACK     p21
+#define ECU_MENU_UP   p22
+
 
 #define DEFAULTDELAY    10

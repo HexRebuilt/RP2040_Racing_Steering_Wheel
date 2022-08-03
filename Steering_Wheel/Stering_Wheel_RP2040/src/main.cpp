@@ -7,11 +7,15 @@
 //#include <Wire.h>
 
 #include "defines.h"
+#include "buttons\Encoder_KY040.h"
 //#include "apps/HumanInterface/human_interface.h"
 //#include "apps/HumanInterface/Lcd8Digit.h"
 //#include "apps/HumanInterface/LedBar.h"
 
 String message;
+
+Encoder_KY040 volumeEncoder(VOLUME_ENCODER_CW, VOLUME_ENCODER_DATA);
+Encoder_KY040 menuEncoder(MENU_ENCODER_CW, MENU_ENCODER_DATA);
 
 // Lcd8Digit lcd8Digit;
 //#include <DigitLedDisplay.h>
