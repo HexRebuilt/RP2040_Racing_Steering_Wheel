@@ -17,7 +17,7 @@
 #define ONBOARD_LED_PIN     D16
 #define ONBOARD_LED_TYPE    WS2812B
 #define ONBOARD_LED_COLOR   RGB
-#define LED_STRYPE_PIN      D7
+#define LED_STRYPE_PIN      D6
 #define NUM_LEDS            8
 #define LED_STRYPE_TYPE     WS2812B
 #define LED_STRYPE_COLOR    GRB
@@ -50,7 +50,7 @@
 //Encoder pins
 #define VOLUME_ENCODER_CW    D4
 #define VOLUME_ENCODER_DATA  D5
-#define VOLUME_ENCODER_PRESS D6
+#define VOLUME_ENCODER_PRESS D7
 #define MENU_ENCODER_CW      D13
 #define MENU_ENCODER_DATA    D14
 #define MENU_ENCODER_PRESS   D15
@@ -59,14 +59,16 @@
 #define RADIO_RED     D8
 #define RADIO_BLUE    D12
 #define RADIO_GREEN   D17
-#define RADIO_BLACK   D18
-#define RADIO_BACK    D23
-#define RADIO_NEXT    D24
+#define RADIO_BLACK   D8
+#define RADIO_BACK    D15
+#define RADIO_NEXT    D16
 //ecu ones
 #define ECU_RED       D19
 #define ECU_YELLOW    D20
 #define ECU_BLACK     D21
-#define ECU_MENU_UP   D22
+//menu ones
+#define MENU_UP       D27
+#define MENU_DOWN     D28
 
 
 #define DEFAULTDELAY    10

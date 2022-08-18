@@ -84,7 +84,7 @@ void loop()
 */
 
   // Testing writing over SERIAL1
-  // Serial.println("testing Serial1");
+  Serial.println("testing platformio");
   WHEELSERIAL.write("Hi from the wheel!");
 
   // reading stuff over serial
