@@ -1,30 +1,26 @@
 #include <Arduino.h>
-#include <stdlib.h>
-#include <hardware/pio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <SPI.h>
-#include <BH1750.h>
 #include <Wire.h>
-
+#include <i2cdetect.h>
+#include <BH1750.h>
 
 #include "defines.h"
 #include "buttons\Encoder_KY040.h"
-//#include "apps/HumanInterface/human_interface.h"
-//#include "apps/HumanInterface/Lcd8Digit.h"
+#include "apps/HumanInterface/human_interface.h"
+#include "apps/HumanInterface/Lcd8Digit.h"
 //#include "apps/HumanInterface/LedBar.h"
 
 String message;
 
-Encoder_KY040 volumeEncoder(VOLUME_ENCODER_CW, VOLUME_ENCODER_DATA);
-Encoder_KY040 menuEncoder(MENU_ENCODER_CW, MENU_ENCODER_DATA);
+//Encoder_KY040 volumeEncoder(VOLUME_ENCODER_CW, VOLUME_ENCODER_DATA);
+//Encoder_KY040 menuEncoder(MENU_ENCODER_CW, MENU_ENCODER_DATA);
 
-
-// Lcd8Digit lcd8Digit;
-//#include <DigitLedDisplay.h>
-//DigitLedDisplay lcd = DigitLedDisplay(COPI, LCD_CS, SCK);
+Lcd8Digit lcd8Digit;
 
 BH1750 lightMeter;
-
+/*
 void VolumeCount(){
   volumeEncoder.Steps();
 }
@@ -32,7 +28,7 @@ void VolumeCount(){
 void MenuCount(){
   menuEncoder.Steps();
 }
-
+*/
 void setup()
 {
   // put your setup code here, to run once:
@@ -47,6 +43,17 @@ void setup()
   //attachInterrupt(MENU_ENCODER_DATA, MenuCount, CHANGE);
 
 
+  delay(7000);
+  //I2C to the light sensor
+  Wire1.setSDA(D2);
+  Wire1.setSCL(D3);
+  Wire1.setClock(300000);
+  Wire1.begin();
+  Serial.println("I2C Scanning:");
+  i2cdetect();
+  lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0x23, &Wire1);
+  
+
   
   // starting the serial communication to the wheel on UART0
   WHEELSERIAL.setRX(WHEELRX);
@@ -54,13 +61,6 @@ void setup()
   WHEELSERIAL.begin(WHEELBAUD);
   Serial.println("Communication to the wheel started...");
   
-  /*
-  //I2C to the light sensor
-  Wire.setSDA(I2C_SDA);
-  Wire.setSCL(I2C_SCL);
-  Wire.begin();
-  lightMeter.begin();
-  */
 
   // lcd and led initialization  
   //lcd.on();
@@ -68,7 +68,7 @@ void setup()
   //lcd.setDigitLimit(8); // 8 digit
   //lcd.setBright(MAX_BRIGHT_LCD);
   //lcd.clear();
-  // lcd8Digit.Initialize();
+  lcd8Digit.Initialize();
   Serial.println("LCD & LED configuration DONE");
 }
 
@@ -93,9 +93,15 @@ void loop()
   {
     message.concat((char)WHEELSERIAL.read());
   }
+  if(message.compareTo("\n")) //something has arrived
+  {
+    Serial.print("Message recieved: ");
+    Serial.println(message);
+  }
 
-  Serial.print("Message recieved: ");
-  Serial.println(message);
+  //lcd stuff
+  //lcd8Digit.DownMenu(); 
+  lcd8Digit.Update();
 
   delay(1000);
 }

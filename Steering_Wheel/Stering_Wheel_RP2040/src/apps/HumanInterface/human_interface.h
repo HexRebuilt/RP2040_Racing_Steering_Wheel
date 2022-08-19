@@ -14,14 +14,16 @@ private:
 protected:
     short currentValue = 0, delta = 0;
     boolean isBrightnessChanged = false;
-    
+    int rpm = 0;
 
 public:
     void Initialize();
 
     void Update();
 
-    void SetRPM(int newRPM);
+    void SetRPM(int newRPM){
+        rpm = newRPM;
+    }
 
     /**
      * setting up the brightness depending on the difference from the previous value adding 

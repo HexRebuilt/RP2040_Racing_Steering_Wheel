@@ -1,16 +1,12 @@
-
-
-
+#include <LedControl.h>
 //#include "storageManager.h"
-#include "DigitLedDisplay.h"
 
 class Lcd8Digit : public HumanInterface
 {
 private:
     /* data */
     //StorageManager storage;
-    //LedControl lcd = LedControl(LCD_DIN, LCD_CLK, LCD_CS, 1);
-    DigitLedDisplay lcd = DigitLedDisplay(LCD_DIN, LCD_CLK, LCD_CS);
+    LedControl lcd = LedControl(LCD_DIN, LCD_CLK, LCD_CS, 1);
     int lcdbrightness = MAX_BRIGHT_LCD;                                          // initial level
     int rpm = 0, speed = 0, satellites = 0, hours = 0, minutes = 0, seconds = 0; // oiltemp =0, watertmp=0;
     short brightness = 100;
@@ -18,7 +14,6 @@ private:
     unsigned long switchtime = 0;
     boolean day = true;
     short encoderValue = 0, encoderDelta = 0;
-    boolean isRadioConfigOut = false;
 
     enum State : uint8_t
     {
@@ -29,7 +24,6 @@ private:
         satelliteNumber,
         clock,
         bright,
-        radioOut,
         end_of_states
     };
 
@@ -37,7 +31,7 @@ private:
 
     void SetTextLCD(String text)
     {
-        lcd.clear();
+        lcd.clearDisplay(0);
         int i, digit = 7;
         // check if the string is less than 8 characters, in case fill it up with spaces
         // i do not care about the termination character because it cannot be displayed
@@ -106,14 +100,6 @@ private:
         SetTextLCD(hud);
     }
 
-    /**
-     * @brief function that notifies the change in radio output time 
-     * 
-     */
-    void RadioConfigTime(){
-        isRadioConfigOut = true;
-        SetTextLCD("0U1. 5EC");
-    }
     // changing the brightness
     void BrightChange()
     {
@@ -199,10 +185,10 @@ public:
     void Initialize()
     {
         // lcd initialization
-        lcd.setDigitLimit(8); // 8 digit
-        lcd.setBright(MAX_BRIGHT_LCD);
-        lcd.on();
-        lcd.clear();
+        lcd.shutdown(0, false);
+        lcd.setScanLimit(0, 8); // 8 digit
+        lcd.setIntensity(0, MAX_BRIGHT_LCD);
+        lcd.clearDisplay(0);
         Serial.println("LCD configuration DONE");
         SetTextLCD("-HELL0-");
         // memory config
@@ -214,34 +200,29 @@ public:
         speed = newSpeed;
     }
 
-    void SetRPM(int newRPM)
-    {
-        rpm = newRPM;
-    }
-
     /**
      * Function that sets the time
      * INPUT: hours,minutes,seconds
      * */
-/*
     void SetTime(int h, int m, int s)
     {
+        /*
         hours = h + storage.GetTimeZone();
         if (hours > 24)
         {
             hours = storage.GetTimeZone();
         }
-
+        */
+        hours   = h;
         minutes = m;
         seconds = s;
     }
-*/
+
     /**
      * function that use the internal enum variable to choose what to display
      * */
     void Update()
     {
-        isRadioConfigOut = false;
         // Serial.println(currentstate);
         switch (currentstate)
         {
@@ -263,23 +244,12 @@ public:
             BrightChange();
             TimeToReset();
             break;
-        case radioOut:
-            RadioConfigTime();
-            //NOT CALLING FOR TIMETORESET BECAUSE NEEDS TO STAY IN THIS POSITION
-            break;
         default:
             // Serial.println("tachometer");
             currentstate = tachometer;
             SetTachometer();
             break;
         }
-    }
-
-    /**
-     * @brief funciton that goves back to the main the state of the config timing
-     */
-    boolean IsRadioConfigOut(){
-        return isRadioConfigOut;
     }
 
     /**
@@ -317,7 +287,6 @@ public:
      * when possible
      * @param encoder value given by the encoder wheel
      */
-/*
     void ModifyValues(short encoder)
     {
         
@@ -333,14 +302,14 @@ public:
             break;
         case clock:
             Serial.println("Chaniging timezone");
-            short newTimezone = storage.GetTimeZone() + encoderDelta;
-            storage.SetTimeZone(newTimezone);
+            short newTimezone = 0;//storage.GetTimeZone() + encoderDelta;
+            //storage.SetTimeZone(newTimezone);
             switchtime = millis();
             break;
         }
         encoderDelta=0;
     }
-*/
+
     void SetSatellites(int newSat)
     {
         satellites = newSat;
