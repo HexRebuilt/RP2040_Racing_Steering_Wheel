@@ -52,8 +52,8 @@
 #define VOLUME_ENCODER_DATA  D5
 #define VOLUME_ENCODER_PRESS D7
 #define MENU_ENCODER_CW      D13
-#define MENU_ENCODER_DATA    D14
-#define MENU_ENCODER_PRESS   D15
+#define MENU_ENCODER_DATA    D15
+#define MENU_ENCODER_PRESS   D14
 
 //Button pins
 #define RADIO_RED     D8

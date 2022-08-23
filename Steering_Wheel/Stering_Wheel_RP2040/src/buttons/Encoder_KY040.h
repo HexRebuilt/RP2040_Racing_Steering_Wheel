@@ -17,7 +17,27 @@ public:
      * needs 3 pins:
      * INPUT: pins: CW, DATA, SWITCH. if no witch is available put it to 0
      * */
-    Encoder_KY040(int pincw, int pindata);
+    Encoder_KY040(int pincw, int pindata, int click);
+
+    /**
+     * the encoders are wired in a way that 3.3v is returned when not pressed
+     * */
+    boolean IsPressed(){
+        return !digitalRead(pinSW);
+    }
+    void Startup()
+    {
+        pinMode(pinA, INPUT);
+        pinMode(pinB, INPUT);
+        pinMode(pinSW, INPUT);
+
+        /* Read Pin A
+        Whatever state it's in will reflect the last position
+        */
+        pinALast = digitalRead(pinA);
+
+        Serial.println("Encoder initialized");
+    }
 
     /**
      * gives you back the number of steps travelled
@@ -59,18 +79,9 @@ public:
     }
 };
 
-Encoder_KY040::Encoder_KY040(int pincw, int pindata)
+Encoder_KY040::Encoder_KY040(int pincw, int pindata, int click)
 {
     pinA = pincw;
     pinB = pindata;
-
-    pinMode(pinA, INPUT);
-    pinMode(pinB, INPUT);
-
-    /* Read Pin A
-    Whatever state it's in will reflect the last position
-    */
-    pinALast = digitalRead(pinA);
-
-    Serial.println("Encoder initialized");
+    pinSW = click;
 }
