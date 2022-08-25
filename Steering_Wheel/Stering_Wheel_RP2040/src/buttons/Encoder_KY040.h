@@ -10,7 +10,7 @@ private:
     int encoderPosCount = 0;
     int pinALast;
     int aVal;
-    boolean bCW;
+    boolean bCW, pressed;
 
 public:
     /**
@@ -23,8 +23,23 @@ public:
      * the encoders are wired in a way that 3.3v is returned when not pressed
      * */
     boolean IsPressed(){
-        return !digitalRead(pinSW);
+        return pressed;//!digitalRead(pinSW);
     }
+
+    void SetPress(boolean value){
+        pressed = value;
+    }
+
+    void Press ()
+    {
+        pressed = true;
+    }
+
+    void released()
+    {
+        pressed = false;
+    }
+
     void Startup()
     {
         pinMode(pinA, INPUT);

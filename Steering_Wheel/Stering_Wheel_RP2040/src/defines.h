@@ -60,15 +60,15 @@
 #define RADIO_BLUE    D12
 #define RADIO_GREEN   D17
 #define RADIO_BLACK   D8
-#define RADIO_BACK    D15
-#define RADIO_NEXT    D16
+#define RADIO_BACK    D26
+#define RADIO_NEXT    D27
 //ecu ones
 #define ECU_RED       D19
 #define ECU_YELLOW    D20
 #define ECU_BLACK     D21
 //menu ones
-#define MENU_UP       D27
-#define MENU_DOWN     D28
+#define MENU_UP       D28
+#define MENU_DOWN     D29
 
 
 #define DEFAULTDELAY    10

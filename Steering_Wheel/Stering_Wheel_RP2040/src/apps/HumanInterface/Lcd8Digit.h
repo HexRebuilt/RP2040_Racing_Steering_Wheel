@@ -5,7 +5,7 @@ class Lcd8Digit : public HumanInterface
 {
 private:
     /* data */
-    //StorageManager storage;
+    // StorageManager storage;
     LedControl lcd = LedControl(LCD_DIN, LCD_CLK, LCD_CS, 1);
     int lcdbrightness = MAX_BRIGHT_LCD;                                          // initial level
     int rpm = 0, speed = 0, satellites = 0, hours = 0, minutes = 0, seconds = 0; // oiltemp =0, watertmp=0;
@@ -103,7 +103,12 @@ private:
     // changing the brightness
     void BrightChange()
     {
-        brightChange = "L16H ";
+        brightChange = "L16H.  ";
+        if (brightness < 10)
+        {
+            brightChange.concat(" ");
+        }
+        
         brightChange.concat(brightness);
         isBrightnessChanged = false;
         SetTextLCD(brightChange);
@@ -192,7 +197,7 @@ public:
         Serial.println("LCD configuration DONE");
         SetTextLCD("-HELL0-");
         // memory config
-        //storage.Startup();
+        // storage.Startup();
     }
 
     void SetSpeed(int newSpeed)
@@ -213,7 +218,7 @@ public:
             hours = storage.GetTimeZone();
         }
         */
-        hours   = h;
+        hours = h;
         minutes = m;
         seconds = s;
     }
@@ -272,13 +277,10 @@ public:
         }
         Serial.print("lcdbrightness value: ");
         Serial.println(lcdbrightness);
+        brightness = lcdbrightness;
         // isBrightnessChanged = true;
         currentstate = bright; // need a context switch
         switchtime = millis();
-
-        brightness = map(lcdbrightness, MIN_BRIGHT_LCD, MAX_BRIGHT_LCD, 10, 100);
-        Serial.print("new brightness: ");
-        Serial.println(brightness);
     }
 
     /**
@@ -289,25 +291,26 @@ public:
      */
     void ModifyValues(short encoder)
     {
-        
         // Calculating the delta
         encoderDelta = encoder - encoderValue;
         encoderValue = encoder; // updating the stored value
-
-        switch (currentstate)
+        if (encoderDelta != 0)
         {
-        default:
-            Serial.println("Default changing brightness");
-            SetBrightness(encoderDelta);
-            break;
-        case clock:
-            Serial.println("Chaniging timezone");
-            short newTimezone = 0;//storage.GetTimeZone() + encoderDelta;
-            //storage.SetTimeZone(newTimezone);
-            switchtime = millis();
-            break;
+            switch (currentstate)
+            {
+            default:
+                Serial.println("Default changing brightness");
+                SetBrightness(encoderDelta);
+                break;
+            case clock:
+                Serial.println("Chaniging timezone");
+                short newTimezone = 0; // storage.GetTimeZone() + encoderDelta;
+                // storage.SetTimeZone(newTimezone);
+                switchtime = millis();
+                break;
+            }
+            encoderDelta = 0;
         }
-        encoderDelta=0;
     }
 
     void SetSatellites(int newSat)

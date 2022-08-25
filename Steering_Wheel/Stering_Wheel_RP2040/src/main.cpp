@@ -34,8 +34,36 @@ void VolumeCount(){
   volumeEncoder.Steps();
 }
 
+void VolumePress(){
+  volumeEncoder.Press();
+}
+
 void MenuCount(){
   menuEncoder.Steps();
+}
+
+void MenuPress(){
+  menuEncoder.Press();
+}
+
+void MenuUP(){
+  Serial.println("Menu UP");
+  lcd8Digit.UpMenu();
+}
+
+void MenuDown(){
+  Serial.println("Menu DOWN");
+  lcd8Digit.DownMenu();
+}
+
+void RadioNext(){
+  Serial.println("Radio NEXT");
+  //TODO
+}
+
+void RadioBack(){
+  Serial.println("Radio BACK");
+  //TODO
 }
 
 void setup()
@@ -45,20 +73,35 @@ void setup()
   // DEBUG OVER USB serial
   Serial.begin(9600);
 
-  // attaching interrupts to the pins
-  // attachInterrupt(VOLUME_ENCODER_CW, VolumeCount, CHANGE);
-  // attachInterrupt(VOLUME_ENCODER_DATA, VolumeCount, CHANGE);
-  // attachInterrupt(MENU_ENCODER_CW, MenuCount, CHANGE);
-  // attachInterrupt(MENU_ENCODER_DATA, MenuCount, CHANGE);
+  
+
   delay(7000);
   
   volumeEncoder.Startup();
   menuEncoder.Startup();
-  
+  // attaching interrupts to the pins
+  attachInterrupt(VOLUME_ENCODER_CW, VolumeCount, CHANGE);
+  attachInterrupt(VOLUME_ENCODER_DATA, VolumeCount, CHANGE);
+  attachInterrupt(VOLUME_ENCODER_PRESS, VolumePress,FALLING);
+  attachInterrupt(MENU_ENCODER_CW, MenuCount, CHANGE);
+  attachInterrupt(MENU_ENCODER_DATA, MenuCount, CHANGE);
+  attachInterrupt(MENU_ENCODER_PRESS, MenuPress, FALLING);
+
+  //configuring the input pins
+  pinMode(MENU_UP, INPUT_PULLDOWN);
+  pinMode(MENU_DOWN, INPUT_PULLDOWN);
+  pinMode(RADIO_NEXT, INPUT_PULLDOWN);
+  pinMode(RADIO_BACK, INPUT_PULLDOWN);
+  attachInterrupt(MENU_UP, MenuUP, RISING);
+  attachInterrupt(MENU_DOWN, MenuDown, RISING);
+  attachInterrupt(RADIO_NEXT, RadioNext, RISING);
+  attachInterrupt(RADIO_BACK, RadioBack, RISING);
+
+
   // I2C to the light sensor
   Wire1.setSDA(D2);
   Wire1.setSCL(D3);
-  Wire1.setClock(300000);
+  Wire1.setClock(400000);
   Wire1.begin();
   Serial.println("I2C Scanning:");
   i2cdetect();
@@ -102,20 +145,27 @@ void loop()
     Serial.println(message);
   }
 
+  //reading the encoders
   volumeEncoder.Steps();
   menuEncoder.Steps();
-
   if (volumeEncoder.IsPressed())
   {
     Serial.println("Volume Encoder pressed");
+    volumeEncoder.released();
   }
   if (menuEncoder.IsPressed())
   {
     Serial.println("Menu Encoder pressed");
+    menuEncoder.released();
   }
+
+
+  //IO reading test
+  
 
   // lcd stuff
   //lcd8Digit.DownMenu();
+  lcd8Digit.ModifyValues(menuEncoder.Steps());
   lcd8Digit.Update();
 
   delay(DEFAULTDELAY);
