@@ -7,7 +7,7 @@
 #include <BH1750.h>
 
 #include "defines.h"
-#include "buttons\Encoder_KY040.h"
+#include "button_and_encoders\Encoder_KY040.h"
 /* data */
 int pinA = VOLUME_ENCODER_CW;   // Connected to CLK on KY-040
 int pinB = VOLUME_ENCODER_DATA; // Connected to DT on KY-040
@@ -87,7 +87,8 @@ void setup()
   attachInterrupt(MENU_ENCODER_DATA, MenuCount, CHANGE);
   attachInterrupt(MENU_ENCODER_PRESS, MenuPress, FALLING);
 
-  //configuring the input pins
+  //configuring the input pins 
+  // // rockers
   pinMode(MENU_UP, INPUT_PULLDOWN);
   pinMode(MENU_DOWN, INPUT_PULLDOWN);
   pinMode(RADIO_NEXT, INPUT_PULLDOWN);
@@ -96,6 +97,16 @@ void setup()
   attachInterrupt(MENU_DOWN, MenuDown, RISING);
   attachInterrupt(RADIO_NEXT, RadioNext, RISING);
   attachInterrupt(RADIO_BACK, RadioBack, RISING);
+  // // buttons
+  pinMode(ECU_RED,INPUT_PULLUP);
+  pinMode(ECU_YELLOW,INPUT_PULLUP);
+  pinMode(ECU_WHITE,INPUT_PULLUP);
+  pinMode(RADIO_BLACK,INPUT_PULLUP);
+  pinMode(RADIO_RED,INPUT_PULLUP);
+  pinMode(RADIO_BLUE,INPUT_PULLUP);
+  pinMode(RADIO_GREEN,INPUT_PULLUP);
+
+
 
 
   // I2C to the light sensor
@@ -161,6 +172,10 @@ void loop()
 
 
   //IO reading test
+  if (!digitalRead(ECU_RED))
+  {
+    Serial.println("HELLO");
+  }
   
 
   // lcd stuff

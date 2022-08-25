@@ -56,19 +56,23 @@
 #define MENU_ENCODER_PRESS   D14
 
 //Button pins
-#define RADIO_RED     D8
-#define RADIO_BLUE    D12
-#define RADIO_GREEN   D17
-#define RADIO_BLACK   D8
+#define RADIO_RED     D25 // tbd
+#define RADIO_BLUE    D12 //tbd
+#define RADIO_GREEN   D21 //tbd
+#define RADIO_BLACK   D8 
 #define RADIO_BACK    D26
 #define RADIO_NEXT    D27
+#define RADIO_NUM     9
 //ecu ones
-#define ECU_RED       D19
-#define ECU_YELLOW    D20
-#define ECU_BLACK     D21
+#define ECU_RED       D20
+#define ECU_YELLOW    D19
+#define ECU_WHITE     D17
+#define ECU_NUM       3
 //menu ones
 #define MENU_UP       D28
 #define MENU_DOWN     D29
+#define WHEEL_NUM     5
 
-
+//for the maximum allowed buttons in an handler
+#define MAX_BUTTONS     10
 #define DEFAULTDELAY    10
