@@ -30,7 +30,7 @@
 #define REDLINE_DUTY_CYCLE  75 //to be tested
 #define MINRPM              0 
 #define MAXRPM              7000
-//#define RPMDCPIN               //D19 
+//#define RPMDCPIN            D15 //see the pedalbox
 
 //LCD spi related constants
 #define LCD_DIN                 D11
@@ -56,17 +56,19 @@
 #define MENU_ENCODER_PRESS   D14
 
 //Button pins
-#define RADIO_RED     D25 // tbd
-#define RADIO_BLUE    D12 //tbd
-#define RADIO_GREEN   D21 //tbd
+#include "button_and_encoders/buttonIds.h"
+#define TESTPIN       D24
+#define RADIO_RED     D22 //TESTED
+#define RADIO_BLUE    D21 //TESTED
+#define RADIO_GREEN   D24 //BROKEN
 #define RADIO_BLACK   D8 
 #define RADIO_BACK    D26
 #define RADIO_NEXT    D27
 #define RADIO_NUM     9
 //ecu ones
-#define ECU_RED       D20
-#define ECU_YELLOW    D19
-#define ECU_WHITE     D17
+#define ECU_RED       D18 //TESTED
+#define ECU_YELLOW    D19 //TESTED
+#define ECU_WHITE     D17 //TESTED
 #define ECU_NUM       3
 //menu ones
 #define MENU_UP       D28

@@ -8,23 +8,17 @@
 
 #include "defines.h"
 #include "button_and_encoders\Encoder_KY040.h"
-/* data */
-int pinA = VOLUME_ENCODER_CW;   // Connected to CLK on KY-040
-int pinB = VOLUME_ENCODER_DATA; // Connected to DT on KY-040
-int pinSW = VOLUME_ENCODER_PRESS;
-int encoderPosCount = 0;
-int pinALast = 0;
-int aVal = 0;
-boolean bCW = 0;
 
 #include "apps/HumanInterface/human_interface.h"
 #include "apps/HumanInterface/Lcd8Digit.h"
 //#include "apps/HumanInterface/LedBar.h"
 
-String message;
+String messageIn = "\n";
+String messageOut = "\n";
 
 Encoder_KY040 volumeEncoder(VOLUME_ENCODER_CW, VOLUME_ENCODER_DATA, VOLUME_ENCODER_PRESS);
 Encoder_KY040 menuEncoder(MENU_ENCODER_CW, MENU_ENCODER_DATA, MENU_ENCODER_PRESS);
+int oldval = 0, val = 0;
 
 Lcd8Digit lcd8Digit;
 
@@ -32,10 +26,12 @@ BH1750 lightMeter;
 
 void VolumeCount(){
   volumeEncoder.Steps();
+  
 }
 
 void VolumePress(){
   volumeEncoder.Press();
+  messageOut = RPUSH;
 }
 
 void MenuCount(){
@@ -44,6 +40,7 @@ void MenuCount(){
 
 void MenuPress(){
   menuEncoder.Press();
+  //tbd action
 }
 
 void MenuUP(){
@@ -58,13 +55,49 @@ void MenuDown(){
 
 void RadioNext(){
   Serial.println("Radio NEXT");
-  //TODO
+  messageOut = RUP;
 }
 
 void RadioBack(){
   Serial.println("Radio BACK");
-  //TODO
+  messageOut = RDOWN;
 }
+
+void RadioGreen(){
+  Serial.println("Radio GREEN");
+  messageOut = RGREEN;
+}
+
+void RadioRED(){
+  Serial.println("Radio RED");
+  messageOut = RRED;
+}
+
+void RadioBlue(){
+  Serial.println("Radio BLUE");
+  messageOut = RBLUE;
+}
+
+void RadioBlack(){
+  Serial.println("Radio BLACK");
+  messageOut = RBLACK;
+}
+
+void EcuRed(){
+  Serial.println("ECU RED");
+  messageOut = LRED;
+}
+
+void EcuYellow(){
+  Serial.println("ECU YELLOW");
+  messageOut = LYELLOW;
+}
+
+void EcuWhite(){
+  Serial.println("ECU WHITE");
+  messageOut = LWHITE;
+}
+
 
 void setup()
 {
@@ -105,6 +138,15 @@ void setup()
   pinMode(RADIO_RED,INPUT_PULLUP);
   pinMode(RADIO_BLUE,INPUT_PULLUP);
   pinMode(RADIO_GREEN,INPUT_PULLUP);
+  //pinMode(TESTPIN,INPUT_PULLUP);
+  attachInterrupt(ECU_RED, EcuRed, FALLING);
+  attachInterrupt(ECU_YELLOW, EcuYellow, FALLING);
+  attachInterrupt(ECU_WHITE, EcuWhite, FALLING);
+  attachInterrupt(RADIO_BLACK,RadioBlack,FALLING);
+  attachInterrupt(RADIO_BLUE,RadioBlue,FALLING);
+  attachInterrupt(RADIO_RED,RadioRED,FALLING);
+  attachInterrupt(RADIO_GREEN,RadioGreen,FALLING);
+  
 
 
 
@@ -145,20 +187,40 @@ void loop()
   WHEELSERIAL.write("Hi from the wheel!");
 
   // reading stuff over serial
-  message = "\n";
+  messageIn = "\n";
   while (WHEELSERIAL.available())
   {
-    message.concat((char)WHEELSERIAL.read());
+    messageIn.concat((char)WHEELSERIAL.read());
   }
-  if (message.compareTo("\n")) // something has arrived
+  if (messageIn.compareTo("\n")) // something has arrived
   {
     Serial.print("Message recieved: ");
-    Serial.println(message);
+    Serial.println(messageIn);
   }
+ 
 
   //reading the encoders
-  volumeEncoder.Steps();
   menuEncoder.Steps();
+  val = volumeEncoder.Steps();
+  //volumewheel logic
+  if (val != oldval) //something happened
+  {
+    //val increases if turned right, decreases if turned left
+    if (val - oldval > 0)
+    {
+      Serial.println("Volume UP");
+      messageOut = RRIGHT;
+    }
+    else
+    {
+      Serial.println("Volume DOWN");
+      messageOut = RLEFT;
+    }
+    
+    oldval = val;
+  }
+  
+
   if (volumeEncoder.IsPressed())
   {
     Serial.println("Volume Encoder pressed");
@@ -168,14 +230,25 @@ void loop()
   {
     Serial.println("Menu Encoder pressed");
     menuEncoder.released();
+    messageOut = RPUSH;
   }
 
 
+  //write to the pedalbox
+  while (messageOut.compareTo("\n"))
+  {
+    Serial.println(messageOut);
+    WHEELSERIAL.write(messageOut.c_str());
+    messageOut="\n";
+  }
+
+  /*
   //IO reading test
-  if (!digitalRead(ECU_RED))
+  if (!digitalRead(TESTPIN))
   {
     Serial.println("HELLO");
-  }
+  }*/
+
   
 
   // lcd stuff

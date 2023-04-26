@@ -1,0 +1,12 @@
+#define RGREEN  1
+#define RRED    2
+#define RBLUE   3
+#define RBLACK  4
+#define RUP     5
+#define RDOWN   6
+#define RRIGHT  7
+#define RLEFT   8
+#define RPUSH   9
+#define LRED    10
+#define LYELLOW 11
+#define LWHITE  12

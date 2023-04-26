@@ -299,7 +299,7 @@ public:
             switch (currentstate)
             {
             default:
-                Serial.println("Default changing brightness");
+                Serial.println("Default: changing brightness");
                 SetBrightness(encoderDelta);
                 break;
             case clock:

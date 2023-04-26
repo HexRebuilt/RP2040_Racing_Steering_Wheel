@@ -11,6 +11,8 @@
 #define WHEELBAUD   9600
 #define WHEELSERIAL Serial1
 
+#define RPMDCPIN    p15
+
 //radio potentiometer
 /* SPI PINS are the pins used for SPI 
 (Serial Peripheral Interface) on the Nano RP2040 Connect are the following:
