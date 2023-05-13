@@ -29,5 +29,9 @@ Source: https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-01-technica
 #define CIPO                        p12
 #define COPI                        p11
 #define SCK                         p10
+#define ANALOG_OUTPUT_TIME          20  //ms 
+#define ANALOG_OUTPUT_CONFIG_TIME   2000 //ms
+
+#include "buttonIds.h"
 
 #define DEFAULTDELAY    10
