@@ -8,13 +8,16 @@
 
 #include "defines.h"
 #include "button_and_encoders\Encoder_KY040.h"
+#include "apps/utils/timer.h"
 
 #include "apps/HumanInterface/human_interface.h"
 #include "apps/HumanInterface/Lcd8Digit.h"
-//#include "apps/HumanInterface/LedBar.h"
+// #include "apps/HumanInterface/LedBar.h"
 
 String messageIn = "\n";
 String messageOut = "\n";
+
+Timer timer;
 
 Encoder_KY040 volumeEncoder(VOLUME_ENCODER_CW, VOLUME_ENCODER_DATA, VOLUME_ENCODER_PRESS);
 Encoder_KY040 menuEncoder(MENU_ENCODER_CW, MENU_ENCODER_DATA, MENU_ENCODER_PRESS);
@@ -24,80 +27,93 @@ Lcd8Digit lcd8Digit;
 
 BH1750 lightMeter;
 
-void VolumeCount(){
+void VolumeCount()
+{
   volumeEncoder.Steps();
-  
 }
 
-void VolumePress(){
+void VolumePress()
+{
   volumeEncoder.Press();
   messageOut = RPUSH;
 }
 
-void MenuCount(){
+void MenuCount()
+{
   menuEncoder.Steps();
 }
 
-void MenuPress(){
+void MenuPress()
+{
   menuEncoder.Press();
-  //tbd action
+  // tbd action
 }
 
-void MenuUP(){
+void MenuUP()
+{
   Serial.println("Menu UP");
   lcd8Digit.UpMenu();
 }
 
-void MenuDown(){
+void MenuDown()
+{
   Serial.println("Menu DOWN");
   lcd8Digit.DownMenu();
 }
 
-void RadioNext(){
+void RadioNext()
+{
   Serial.println("Radio NEXT");
   messageOut = RUP;
 }
 
-void RadioBack(){
+void RadioBack()
+{
   Serial.println("Radio BACK");
   messageOut = RDOWN;
 }
 
-void RadioGreen(){
+void RadioGreen()
+{
   Serial.println("Radio GREEN");
   messageOut = RGREEN;
 }
 
-void RadioRED(){
+void RadioRED()
+{
   Serial.println("Radio RED");
   messageOut = RRED;
 }
 
-void RadioBlue(){
+void RadioBlue()
+{
   Serial.println("Radio BLUE");
   messageOut = RBLUE;
 }
 
-void RadioBlack(){
+void RadioBlack()
+{
   Serial.println("Radio BLACK");
   messageOut = RBLACK;
 }
 
-void EcuRed(){
+void EcuRed()
+{
   Serial.println("ECU RED");
   messageOut = LRED;
 }
 
-void EcuYellow(){
+void EcuYellow()
+{
   Serial.println("ECU YELLOW");
   messageOut = LYELLOW;
 }
 
-void EcuWhite(){
+void EcuWhite()
+{
   Serial.println("ECU WHITE");
   messageOut = LWHITE;
 }
-
 
 void setup()
 {
@@ -106,22 +122,20 @@ void setup()
   // DEBUG OVER USB serial
   Serial.begin(9600);
 
-  
-
   delay(7000);
-  
+
   volumeEncoder.Startup();
   menuEncoder.Startup();
   // attaching interrupts to the pins
   attachInterrupt(VOLUME_ENCODER_CW, VolumeCount, CHANGE);
   attachInterrupt(VOLUME_ENCODER_DATA, VolumeCount, CHANGE);
-  attachInterrupt(VOLUME_ENCODER_PRESS, VolumePress,FALLING);
+  attachInterrupt(VOLUME_ENCODER_PRESS, VolumePress, FALLING);
   attachInterrupt(MENU_ENCODER_CW, MenuCount, CHANGE);
   attachInterrupt(MENU_ENCODER_DATA, MenuCount, CHANGE);
   attachInterrupt(MENU_ENCODER_PRESS, MenuPress, FALLING);
 
-  //configuring the input pins 
-  // // rockers
+  // configuring the input pins
+  //  // rockers
   pinMode(MENU_UP, INPUT_PULLDOWN);
   pinMode(MENU_DOWN, INPUT_PULLDOWN);
   pinMode(RADIO_NEXT, INPUT_PULLDOWN);
@@ -131,25 +145,21 @@ void setup()
   attachInterrupt(RADIO_NEXT, RadioNext, RISING);
   attachInterrupt(RADIO_BACK, RadioBack, RISING);
   // // buttons
-  pinMode(ECU_RED,INPUT_PULLUP);
-  pinMode(ECU_YELLOW,INPUT_PULLUP);
-  pinMode(ECU_WHITE,INPUT_PULLUP);
-  pinMode(RADIO_BLACK,INPUT_PULLUP);
-  pinMode(RADIO_RED,INPUT_PULLUP);
-  pinMode(RADIO_BLUE,INPUT_PULLUP);
-  pinMode(RADIO_GREEN,INPUT_PULLUP);
-  //pinMode(TESTPIN,INPUT_PULLUP);
+  pinMode(ECU_RED, INPUT_PULLUP);
+  pinMode(ECU_YELLOW, INPUT_PULLUP);
+  pinMode(ECU_WHITE, INPUT_PULLUP);
+  pinMode(RADIO_BLACK, INPUT_PULLUP);
+  pinMode(RADIO_RED, INPUT_PULLUP);
+  pinMode(RADIO_BLUE, INPUT_PULLUP);
+  pinMode(RADIO_GREEN, INPUT_PULLUP);
+  // pinMode(TESTPIN,INPUT_PULLUP);
   attachInterrupt(ECU_RED, EcuRed, FALLING);
   attachInterrupt(ECU_YELLOW, EcuYellow, FALLING);
   attachInterrupt(ECU_WHITE, EcuWhite, FALLING);
-  attachInterrupt(RADIO_BLACK,RadioBlack,FALLING);
-  attachInterrupt(RADIO_BLUE,RadioBlue,FALLING);
-  attachInterrupt(RADIO_RED,RadioRED,FALLING);
-  attachInterrupt(RADIO_GREEN,RadioGreen,FALLING);
-  
-
-
-
+  attachInterrupt(RADIO_BLACK, RadioBlack, FALLING);
+  attachInterrupt(RADIO_BLUE, RadioBlue, FALLING);
+  attachInterrupt(RADIO_RED, RadioRED, FALLING);
+  attachInterrupt(RADIO_GREEN, RadioGreen, FALLING);
 
   // I2C to the light sensor
   Wire1.setSDA(D2);
@@ -183,8 +193,8 @@ void loop()
   */
 
   // Testing writing over SERIAL1
-  //Serial.println("testing platformio + encoder");
-  WHEELSERIAL.write("Hi from the wheel!");
+  // Serial.println("testing platformio + encoder");
+  // WHEELSERIAL.write("Hi from the wheel!");
 
   // reading stuff over serial
   messageIn = "\n";
@@ -197,15 +207,14 @@ void loop()
     Serial.print("Message recieved: ");
     Serial.println(messageIn);
   }
- 
 
-  //reading the encoders
+  // reading the encoders
   menuEncoder.Steps();
   val = volumeEncoder.Steps();
-  //volumewheel logic
-  if (val != oldval) //something happened
+  // volumewheel logic
+  if (val != oldval) // something happened
   {
-    //val increases if turned right, decreases if turned left
+    // val increases if turned right, decreases if turned left
     if (val - oldval > 0)
     {
       Serial.println("Volume UP");
@@ -216,10 +225,9 @@ void loop()
       Serial.println("Volume DOWN");
       messageOut = RLEFT;
     }
-    
+
     oldval = val;
   }
-  
 
   if (volumeEncoder.IsPressed())
   {
@@ -233,13 +241,20 @@ void loop()
     messageOut = RPUSH;
   }
 
-
-  //write to the pedalbox
-  while (messageOut.compareTo("\n"))
+  if (timer.timePassed() > MIN_INPUT_DELAY)
   {
-    Serial.println(messageOut);
-    WHEELSERIAL.write(messageOut.c_str());
-    messageOut="\n";
+    // write to the pedalbox
+    while (messageOut.compareTo("\n"))
+    {
+      Serial.println(messageOut);
+      messageOut = messageOut + "\n";
+      WHEELSERIAL.write(messageOut.c_str());
+      messageOut = "\n";
+      timer.startTimer();
+    }
+  }
+  else{
+    messageOut = "\n";
   }
 
   /*
@@ -249,13 +264,11 @@ void loop()
     Serial.println("HELLO");
   }*/
 
-  
-
   // lcd stuff
-  //lcd8Digit.DownMenu();
+  // lcd8Digit.DownMenu();
   lcd8Digit.ModifyValues(menuEncoder.Steps());
   lcd8Digit.Update();
 
   delay(DEFAULTDELAY);
-  //delay(500);
+  // delay(500);
 }
