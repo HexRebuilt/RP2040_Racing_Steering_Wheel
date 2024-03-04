@@ -75,6 +75,7 @@
 #define MENU_DOWN     D29
 #define WHEEL_NUM     5
 
-//for the maximum allowed buttons in an handler
-#define MAX_BUTTONS     10
+//minimum input delay to reduce debounce
+#define MIN_INPUT_DELAY 175 //ms
+
 #define DEFAULTDELAY    10

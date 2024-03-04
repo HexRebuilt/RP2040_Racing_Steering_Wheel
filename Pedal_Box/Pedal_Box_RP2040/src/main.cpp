@@ -8,7 +8,7 @@
 #include "defines.h"
 #include "buttonhandler.h"
 #include "buttonIds.h"
-
+#include "apps/utils/timer.h"
   
 //GPS stuff
 UART SerialGPS(GPSTX, GPSRX, NC, NC);
@@ -19,6 +19,7 @@ unsigned int speed, satellites;
 MbedSPI mySPI(CIPO, COPI, SCK);
 #include "mpc4131.h" //functions for the digiral pot
 ButtonHandler buttonHandler;
+Timer timer;
 
 String message;
 
@@ -43,6 +44,7 @@ void setup()
   digitalPotWrite(0);
   Serial.println("SPI initialized..");
   Serial.println("Configuration DONE");
+
 }
 
 void loop()
@@ -53,6 +55,7 @@ void loop()
   //TestPOT();
 
   //Testing writing over SERIAL1
+  //WHEELSERIAL.write("Hi from the pedal Box\n");
   //WHEELSERIAL.write("Hi from the pedal Box\n");
   
   message = "\n";
