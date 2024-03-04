@@ -6,6 +6,8 @@
 #include <string.h>
 
 #include "defines.h"
+#include "buttonhandler.h"
+#include "buttonIds.h"
 
   
 //GPS stuff
@@ -14,9 +16,9 @@ TinyGPSPlus gps;
 unsigned int speed, satellites;
 
 //Radio output stuff
-unsigned short radioOutputStep = 0;
 MbedSPI mySPI(CIPO, COPI, SCK);
 #include "mpc4131.h" //functions for the digiral pot
+ButtonHandler buttonHandler;
 
 String message;
 
@@ -51,7 +53,7 @@ void loop()
   //TestPOT();
 
   //Testing writing over SERIAL1
-  WHEELSERIAL.write("Hi from the pedal Box\n");
+  //WHEELSERIAL.write("Hi from the pedal Box\n");
   
   message = "\n";
   while (WHEELSERIAL.available())
@@ -63,13 +65,15 @@ void loop()
   {
     Serial.print("Message recieved: ");
     Serial.println(message);
+    //analyzing the message
+    //buttonHandler.convertIDtoPot(message);
+    digitalPotWrite (buttonHandler.convertIDtoPot(message));
+    message = "\n";
   }
-  else{}
   
-    
-  delay(500);
 
-  
+
+   
 
   // GPS reading info
   while (SerialGPS.available())
@@ -77,20 +81,22 @@ void loop()
     gps.encode(SerialGPS.read());
   }
 
+  /*
   Serial.print("gps.speed: ");
   Serial.println((int) gps.speed.kmph());
   Serial.print("gps.satellites: ");
   Serial.println(gps.satellites.value());
   Serial.print("gps.time: ");
   Serial.println(gps.time.hour());
+  */
 
   //Writing GPS info to the wheel
   message = "\n";
   message.concat("gps.speed:\t");
   message.concat((int) gps.speed.kmph());
   message.concat("\n");
+  WHEELSERIAL.write(message.c_str());
 
- //WHEELSERIAL.write((string) message);
 
   delay(DEFAULTDELAY);
 }

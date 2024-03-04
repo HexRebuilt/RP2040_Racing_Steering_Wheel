@@ -108,7 +108,7 @@ void setup()
 
   
 
-  delay(7000);
+  //delay(7000);
   
   volumeEncoder.Startup();
   menuEncoder.Startup();
@@ -152,8 +152,8 @@ void setup()
 
 
   // I2C to the light sensor
-  Wire1.setSDA(D2);
-  Wire1.setSCL(D3);
+  Wire1.setSDA(I2C_SDA);
+  Wire1.setSCL(I2C_SCL);
   Wire1.setClock(400000);
   Wire1.begin();
   Serial.println("I2C Scanning:");
@@ -197,7 +197,7 @@ void loop()
 
   // Testing writing over SERIAL1
   //Serial.println("testing platformio + encoder");
-  WHEELSERIAL.write("Hi from the wheel!");
+  //WHEELSERIAL.write("Hi from the wheel!");
 
   // reading stuff over serial
   messageIn = "\n";
@@ -248,7 +248,7 @@ void loop()
   //write to the pedalbox
   while (messageOut.compareTo("\n"))
   {
-    Serial.println(messageOut);
+    Serial.println("mesageout: " + messageOut);
     WHEELSERIAL.write(messageOut.c_str());
     messageOut="\n";
   }
@@ -258,7 +258,6 @@ void loop()
   
 
   // lcd stuff
-  //lcd8Digit.DownMenu();
   lcd8Digit.ModifyValues(menuEncoder.Steps());
   lcd8Digit.Update();
 
