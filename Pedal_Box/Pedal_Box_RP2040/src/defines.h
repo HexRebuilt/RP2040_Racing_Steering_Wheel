@@ -2,8 +2,8 @@
 
 //GPS serial defines for UART1
 #define GPSBAUD 9600
-#define GPSTX   p8
-#define GPSRX   p9
+#define GPSTX   p8 //blue
+#define GPSRX   p9 //white
 
 //Wheel serial defines on UART0
 #define WHEELTX     p0

@@ -169,11 +169,24 @@ void setup()
   // lcd and led initialization
   lcd8Digit.Initialize();
   Serial.println("LCD & LED configuration DONE");
+
+  //pinMode(TESTPIN,INPUT_PULLUP);
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
+  
+  /*
+  //IO reading test
+  if (!digitalRead(TESTPIN))
+  {
+    Serial.println("HELLO");
+  }
+  Serial.println("test2");
+  delay(1000);
+  //
+
 
   /*
     float lux = lightMeter.readLightLevel();
@@ -219,8 +232,6 @@ void loop()
     
     oldval = val;
   }
-  
-
   if (volumeEncoder.IsPressed())
   {
     Serial.println("Volume Encoder pressed");
@@ -242,12 +253,7 @@ void loop()
     messageOut="\n";
   }
 
-  /*
-  //IO reading test
-  if (!digitalRead(TESTPIN))
-  {
-    Serial.println("HELLO");
-  }*/
+  
 
   
 

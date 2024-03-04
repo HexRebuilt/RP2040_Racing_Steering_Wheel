@@ -57,10 +57,10 @@
 
 //Button pins
 #include "button_and_encoders/buttonIds.h"
-#define TESTPIN       D24
-#define RADIO_RED     D22 //TESTED
-#define RADIO_BLUE    D21 //TESTED
-#define RADIO_GREEN   D24 //BROKEN
+//#define TESTPIN       D23
+#define RADIO_RED     D23 
+#define RADIO_BLUE    D22 
+#define RADIO_GREEN   D25 
 #define RADIO_BLACK   D8 
 #define RADIO_BACK    D26
 #define RADIO_NEXT    D27
