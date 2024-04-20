@@ -69,14 +69,18 @@ void loop()
     Serial.print("Message recieved: ");
     Serial.println(message);
     //analyzing the message
-    //buttonHandler.convertIDtoPot(message);
     digitalPotWrite (buttonHandler.convertIDtoPot(message));
+    timer.startTimer();
     message = "\n";
   }
+    
   
-
-
-   
+  //reset pot value after set ammount of time
+  if (timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME)
+  {
+    digitalPotWrite(0);
+  }
+  
 
   // GPS reading info
   while (SerialGPS.available())
@@ -98,6 +102,19 @@ void loop()
   message.concat("gps.speed:\t");
   message.concat((int) gps.speed.kmph());
   message.concat("\n");
+  message.concat("gps.satellites.value:\t");
+  message.concat((int) gps.satellites.value());
+  message.concat("\n");
+  message.concat("gps.time.hour:\t");
+  message.concat((int) gps.time.hour());
+  message.concat("\n");
+  message.concat("gps.time.minute:\t");
+  message.concat((int) gps.time.minute());
+  message.concat("\n");
+  message.concat("gps.time.second:\t");
+  message.concat((int) gps.time.second());
+  message.concat("\n");
+
   WHEELSERIAL.write(message.c_str());
 
 
