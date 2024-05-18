@@ -15,7 +15,9 @@
 // #include "apps/HumanInterface/LedBar.h"
 
 String messageIn = "\n";
+String split_messageIn[3];
 String messageOut = "\n";
+int firstDot = 0, lastDot = 0;
 
 Timer timer;
 
@@ -122,8 +124,8 @@ void setup()
   // DEBUG OVER USB serial
   Serial.begin(9600);
 
-  //delay(7000);
-  
+  // delay(7000);
+
   volumeEncoder.Startup();
   menuEncoder.Startup();
   // attaching interrupts to the pins
@@ -180,13 +182,14 @@ void setup()
   lcd8Digit.Initialize();
   Serial.println("LCD & LED configuration DONE");
 
-  //pinMode(TESTPIN,INPUT_PULLUP);
+  // pinMode(TESTPIN,INPUT_PULLUP);
+
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
-  
+
   /*
   //IO reading test
   if (!digitalRead(TESTPIN))
@@ -206,19 +209,23 @@ void loop()
   */
 
   // Testing writing over SERIAL1
-  //Serial.println("testing platformio + encoder");
-  //WHEELSERIAL.write("Hi from the wheel!");
+  // Serial.println("testing platformio + encoder");
+  // WHEELSERIAL.write("Hi from the wheel!");
 
   // reading stuff over serial
   messageIn = "\n";
-  while (WHEELSERIAL.available())
+  if (WHEELSERIAL.available())
   {
-    messageIn.concat((char)WHEELSERIAL.read());
+    messageIn = WHEELSERIAL.readStringUntil('\n'); //.concat((char)WHEELSERIAL.read());
   }
+
   if (messageIn.compareTo("\n")) // something has arrived
   {
-    Serial.print("Message recieved: ");
-    Serial.println(messageIn);
+
+    //Serial.print("Message recieved: ");
+    //Serial.println(messageIn);
+    // use sscanf to detect the parts
+   
   }
 
   // reading the encoders
@@ -265,18 +272,14 @@ void loop()
       timer.startTimer();
     }
   }
-  else{
+  else
+  {
     messageOut = "\n";
   }
-
-  
-
-  
 
   // lcd stuff
   lcd8Digit.ModifyValues(menuEncoder.Steps());
   lcd8Digit.Update();
 
   delay(DEFAULTDELAY);
-  // delay(500);
 }

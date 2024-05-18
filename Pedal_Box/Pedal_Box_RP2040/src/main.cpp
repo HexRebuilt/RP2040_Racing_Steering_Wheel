@@ -19,7 +19,7 @@ unsigned int speed, satellites;
 MbedSPI mySPI(CIPO, COPI, SCK);
 #include "mpc4131.h" //functions for the digiral pot
 ButtonHandler buttonHandler;
-Timer timer;
+Timer timer, speed_timer;
 
 String message;
 
@@ -45,24 +45,27 @@ void setup()
   Serial.println("SPI initialized..");
   Serial.println("Configuration DONE");
 
+  speed_timer.startTimer();
+
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
-
   //Serial.println("Testing pot output");
   //TestPOT();
-
-  //Testing writing over SERIAL1
-  //WHEELSERIAL.write("Hi from the pedal Box\n");
-  //WHEELSERIAL.write("Hi from the pedal Box\n");
+ 
   
   message = "\n";
-  while (WHEELSERIAL.available())
+  /*while (WHEELSERIAL.available())
   {
     message.concat( (char) WHEELSERIAL.read() );
+  }*/
+  if (WHEELSERIAL.available())
+  {
+    message=WHEELSERIAL.readStringUntil('\n');
   }
+  
 
   if (message.compareTo("\n"))
   {
@@ -88,34 +91,29 @@ void loop()
     gps.encode(SerialGPS.read());
   }
 
-  /*
-  Serial.print("gps.speed: ");
-  Serial.println((int) gps.speed.kmph());
-  Serial.print("gps.satellites: ");
-  Serial.println(gps.satellites.value());
-  Serial.print("gps.time: ");
-  Serial.println(gps.time.hour());
-  */
+  //Writing GPS info to the wheel depending on the time passed
 
-  //Writing GPS info to the wheel
-  message = "\n";
-  message.concat("gps.speed:\t");
-  message.concat((int) gps.speed.kmph());
-  message.concat("\n");
-  message.concat("gps.satellites.value:\t");
-  message.concat((int) gps.satellites.value());
-  message.concat("\n");
-  message.concat("gps.time.hour:\t");
-  message.concat((int) gps.time.hour());
-  message.concat("\n");
-  message.concat("gps.time.minute:\t");
-  message.concat((int) gps.time.minute());
-  message.concat("\n");
-  message.concat("gps.time.second:\t");
-  message.concat((int) gps.time.second());
-  message.concat("\n");
-
-  WHEELSERIAL.write(message.c_str());
+  if (speed_timer.timePassed()>=20)
+  {
+    message = "g.sp.";
+    message.concat((int) gps.speed.kmph());
+    message.concat("\t");
+    message.concat("g.st.");
+    message.concat((int) gps.satellites.value());
+    message.concat("\t");
+    message.concat("g.h.");
+    message.concat((int) gps.time.hour());
+    message.concat("\t");
+    message.concat("g.m.");
+    message.concat((int) gps.time.minute());
+    message.concat("\t");
+    message.concat("g.s.");
+    message.concat((int) gps.time.second());
+    message.concat("\n");
+    WHEELSERIAL.write(message.c_str());
+    speed_timer.startTimer();
+  }
+  
 
 
   delay(DEFAULTDELAY);
