@@ -1,3 +1,4 @@
+#ifndef NATIVE_BUILD
 #include <Arduino.h>
 #include <stdlib.h>
 #include <hardware/pio.h>
@@ -14,6 +15,14 @@
 UART SerialGPS(GPSTX, GPSRX, NC, NC);
 TinyGPSPlus gps;
 unsigned int speed, satellites;
+#endif
+
+#ifdef NATIVE_BUILD
+// Native stub
+int main() {
+    return 0;
+}
+#else
 
 //Radio output stuff
 MbedSPI mySPI(CIPO, COPI, SCK);
@@ -118,3 +127,5 @@ void loop()
 
   delay(DEFAULTDELAY);
 }
+
+#endif
