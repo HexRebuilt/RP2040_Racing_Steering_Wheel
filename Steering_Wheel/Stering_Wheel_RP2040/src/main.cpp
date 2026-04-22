@@ -7,7 +7,7 @@
 #include <BH1750.h>
 
 #include "defines.h"
-#include "button_and_encoders\Encoder_KY040.h"
+#include "button_and_encoders/Encoder_KY040.h"
 #include "apps/utils/timer.h"
 
 #include "apps/HumanInterface/human_interface.h"
@@ -29,6 +29,61 @@ Lcd8Digit lcd8Digit;
 
 BH1750 lightMeter;
 
+// GPS Global Variables
+float gpsSpeed = 0.0;
+int gpsSatellites = 0;
+int gpsHours = 0;
+int gpsMinutes = 0;
+int gpsSeconds = 0;
+
+void parseGPSData(String gpsString) {
+  // Expected format: "g.sp.X g.st.X g.h.X g.m.X g.s.X"
+  // Parse speed (g.sp.X)
+  int idx = gpsString.indexOf("g.sp.");
+  if (idx >= 0) {
+    int endIdx = gpsString.indexOf(" ", idx);
+    if (endIdx < 0) endIdx = gpsString.length();
+    String speedStr = gpsString.substring(idx + 5, endIdx);
+    gpsSpeed = speedStr.toFloat();
+  }
+  
+  // Parse satellites (g.st.X)
+  idx = gpsString.indexOf("g.st.");
+  if (idx >= 0) {
+    int endIdx = gpsString.indexOf(" ", idx);
+    if (endIdx < 0) endIdx = gpsString.length();
+    String satStr = gpsString.substring(idx + 5, endIdx);
+    gpsSatellites = satStr.toInt();
+  }
+  
+  // Parse hours (g.h.X)
+  idx = gpsString.indexOf("g.h.");
+  if (idx >= 0) {
+    int endIdx = gpsString.indexOf(" ", idx);
+    if (endIdx < 0) endIdx = gpsString.length();
+    String hourStr = gpsString.substring(idx + 4, endIdx);
+    gpsHours = hourStr.toInt();
+  }
+  
+  // Parse minutes (g.m.X)
+  idx = gpsString.indexOf("g.m.");
+  if (idx >= 0) {
+    int endIdx = gpsString.indexOf(" ", idx);
+    if (endIdx < 0) endIdx = gpsString.length();
+    String minStr = gpsString.substring(idx + 4, endIdx);
+    gpsMinutes = minStr.toInt();
+  }
+  
+  // Parse seconds (g.s.X)
+  idx = gpsString.indexOf("g.s.");
+  if (idx >= 0) {
+    int endIdx = gpsString.indexOf(" ", idx);
+    if (endIdx < 0) endIdx = gpsString.length();
+    String secStr = gpsString.substring(idx + 4, endIdx);
+    gpsSeconds = secStr.toInt();
+  }
+}
+
 void VolumeCount()
 {
   volumeEncoder.Steps();
@@ -37,7 +92,7 @@ void VolumeCount()
 void VolumePress()
 {
   volumeEncoder.Press();
-  messageOut = RPUSH;
+  messageOut = String(RPUSH);
 }
 
 void MenuCount()
@@ -66,55 +121,55 @@ void MenuDown()
 void RadioNext()
 {
   Serial.println("Radio NEXT");
-  messageOut = RUP;
+  messageOut = String(RUP);
 }
 
 void RadioBack()
 {
   Serial.println("Radio BACK");
-  messageOut = RDOWN;
+  messageOut = String(RDOWN);
 }
 
 void RadioGreen()
 {
   Serial.println("Radio GREEN");
-  messageOut = RGREEN;
+  messageOut = String(RGREEN);
 }
 
 void RadioRED()
 {
   Serial.println("Radio RED");
-  messageOut = RRED;
+  messageOut = String(RRED);
 }
 
 void RadioBlue()
 {
   Serial.println("Radio BLUE");
-  messageOut = RBLUE;
+  messageOut = String(RBLUE);
 }
 
 void RadioBlack()
 {
   Serial.println("Radio BLACK");
-  messageOut = RBLACK;
+  messageOut = String(RBLACK);
 }
 
 void EcuRed()
 {
   Serial.println("ECU RED");
-  messageOut = LRED;
+  messageOut = String(LRED);
 }
 
 void EcuYellow()
 {
   Serial.println("ECU YELLOW");
-  messageOut = LYELLOW;
+  messageOut = String(LYELLOW);
 }
 
 void EcuWhite()
 {
   Serial.println("ECU WHITE");
-  messageOut = LWHITE;
+  messageOut = String(LWHITE);
 }
 
 void setup()
@@ -221,6 +276,20 @@ void loop()
 
   if (messageIn.compareTo("\n")) // something has arrived
   {
+    // Parse GPS data if message starts with "g."
+    if (messageIn.startsWith("g.")) {
+      parseGPSData(messageIn);
+      Serial.print("GPS - Speed: ");
+      Serial.print(gpsSpeed);
+      Serial.print(" Satellites: ");
+      Serial.print(gpsSatellites);
+      Serial.print(" Time: ");
+      Serial.print(gpsHours);
+      Serial.print(":");
+      Serial.print(gpsMinutes);
+      Serial.print(":");
+      Serial.println(gpsSeconds);
+    }
 
     //Serial.print("Message recieved: ");
     //Serial.println(messageIn);
@@ -238,12 +307,12 @@ void loop()
     if (val - oldval > 0)
     {
       Serial.println("Volume UP");
-      messageOut = RRIGHT;
+      messageOut = String(RRIGHT);
     }
     else
     {
       Serial.println("Volume DOWN");
-      messageOut = RLEFT;
+      messageOut = String(RLEFT);
     }
 
     oldval = val;
@@ -257,7 +326,7 @@ void loop()
   {
     Serial.println("Menu Encoder pressed");
     menuEncoder.released();
-    messageOut = RPUSH;
+    messageOut = String(RPUSH);
   }
 
   if (timer.timePassed() > MIN_INPUT_DELAY)
@@ -280,6 +349,11 @@ void loop()
   // lcd stuff
   lcd8Digit.ModifyValues(menuEncoder.Steps());
   lcd8Digit.Update();
+  
+  // Update LCD with GPS values
+  lcd8Digit.SetSpeed(gpsSpeed);
+  lcd8Digit.SetSatellites(gpsSatellites);
+  lcd8Digit.SetTime(gpsHours, gpsMinutes, gpsSeconds);
 
   delay(DEFAULTDELAY);
 }

@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "Steering_Wheel/Stering_Wheel_RP2040"
+		},
+		{
+			"name": "Pedal_Box_RP2040",
+			"path": "Pedal_Box/Pedal_Box_RP2040"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.impl": "cpp",
+			"*.tcc": "cpp",
+			"exception": "cpp",
+			"memory_resource": "cpp",
+			"fstream": "cpp",
+			"iosfwd": "cpp",
+			"new": "cpp",
+			"ostream": "cpp",
+			"sstream": "cpp",
+			"streambuf": "cpp"
+		}
+	}
+}
