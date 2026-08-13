@@ -1,0 +1,168 @@
+# KiCad Mod File - Button Holes from DXF button plate v30
+# Units: mm
+# Purpose: Mounting/holes for buttons - positions defined for future use
+# Even though buttons won't be soldered now, the PCB has the space/pads
+
+# ============================================
+# Main Button Hole Footprint (8 buttons)
+# ============================================
+(Footprint "Button_Hole"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Button_Hole" (at 0 0) (layer F.SilkS))
+  
+  # ============================================
+  # 8 Button Mounting Holes (from DXF)
+  # ============================================
+  # These are hole positions - user can solder buttons later
+  # Standard tactile button: 12mm mounting, pads around holes
+  
+  # Button 1 hole + pad
+  (pad 1 thru_hole "B1_MOUNT" (circle 3.2) (net BUTTON_1)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+    (tPause "0" (tPollist ""))
+  )
+  (pad 2 thru_hole "B1_PAD" (circle 5.0) (net BUTTON_1)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 2 hole + pad
+  (pad 3 thru_hole "B2_MOUNT" (circle 3.2) (net BUTTON_2)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 4 thru_hole "B2_PAD" (circle 5.0) (net BUTTON_2)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 3 hole + pad
+  (pad 5 thru_hole "B3_MOUNT" (circle 3.2) (net BUTTON_3)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 6 thru_hole "B3_PAD" (circle 5.0) (net BUTTON_3)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 4 hole + pad
+  (pad 7 thru_hole "B4_MOUNT" (circle 3.2) (net BUTTON_4)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 8 thru_hole "B4_PAD" (circle 5.0) (net BUTTON_4)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 5 hole + pad
+  (pad 9 thru_hole "B5_MOUNT" (circle 3.2) (net BUTTON_5)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 10 thru_hole "B5_PAD" (circle 5.0) (net BUTTON_5)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 6 hole + pad
+  (pad 11 thru_hole "B6_MOUNT" (circle 3.2) (net BUTTON_6)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 12 thru_hole "B6_PAD" (circle 5.0) (net BUTTON_6)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 7 hole + pad
+  (pad 13 thru_hole "B7_MOUNT" (circle 3.2) (net BUTTON_7)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 14 thru_hole "B7_PAD" (circle 5.0) (net BUTTON_7)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # Button 8 hole + pad
+  (pad 15 thru_hole "B8_MOUNT" (circle 3.2) (net BUTTON_8)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 16 thru_hole "B8_PAD" (circle 5.0) (net BUTTON_8)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # ============================================
+  # Reset Button Position (NOT populated initially)
+  # ============================================
+  # Position: Near RP2040 EN pin
+  # Pad: Mounting hole for reset button
+  (pad 17 thru_hole "RESET_MOUNT" (circle 3.2) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (fp_text "Reset_Hole" (at 0 25) (layer F.SilkS) (t "Reset: Hold for manual reset" (halign "center" "valign" "top")))
+  
+  # ============================================
+  # Boot Button Position (BOOTSEL - NOT populated initially)
+  # ============================================
+  # Position: Near GPIO22
+  # Pad: Mounting hole for Boot button  
+  (pad 18 thru_hole "BOOT_MOUNT" (circle 3.2) (net GPIO22)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (fp_text "Boot_Mark" (at 0 -25) (layer F.SilkS) (t "Boot: Hold during USB plug for mass storage" (halign "center" "valign" "top")))
+  
+  # ============================================
+  # LCD Area (from DXF - larger rectangle)
+  # ============================================
+  (fp_text "LCD_AREA" (at 0 40) (layer F.SilkS) (t "Larger rect: 8-digit LCD from DXF" (halign "center" "valign" "top")))
+  
+  # ============================================
+  # LED Area (from DXF - smaller rectangle)
+  # ============================================
+  (fp_text "LED_AREA" (at 0 -40) (layer F.SilkS) (t "Smaller rect: LED strip from DXF" (halign "center" "valign" "bottom")))
+)
+
+# ============================================
+# Single LED Strip Footprint (small rectangle)
+# ============================================
+(Footprint "LED_Strip"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "LED_Strip" (at 0 0) (layer F.SilkS))
+  
+  # 4-pad WS2812B LED strip (but user may not solder)
+  (pad 1 thru_hole "LED_DATA" (circle 1.5) (net GPIO6)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  (pad 2 thru_hole "LED_VCC" (circle 1.5) (net 5V)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  (pad 3 thru_hole "LED_GND" (circle 1.5) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  (pad 4 thru_hole "LED_NC" (circle 1.5) (net NC)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  
+  # Keepout marking smaller rectangle from DXF
+  (fp_text "LED_KEEP" (at 0 -30) (layer F.SilkS) (t "Smaller rect: LED strip area" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# LCD 8-Digit Keepout (larger rectangle from DXF)
+# ============================================
+(Footprint "LCD_8Segment"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "LCD_8Segment" (at 0 0) (layer F.SilkS))
+  
+  # Keepout area - larger rectangle from DXF for 8-digit display
+  # User may populate LCD later
+  (zone_keypads "LCD_KEEPOUT"
+    (at 0 0)
+    (size 50 10)  ; 50×10mm from DXF
+    (drill 0)
+    (status "no")
+  )
+  
+  # Silk screen rectangle
+  (fLines "LCD_RECT"
+    (start -25 -5)
+    (end 25 5)
+    (layer F.SilkS)
+    (width 0.2)
+  )
+  
+  (fp_text "LCD_8DIGIT" (at 0 8) (layer F.SilkS) (t "8-DIGIT SPI: populate later" (halign "center" "valign" "middle")))
+)

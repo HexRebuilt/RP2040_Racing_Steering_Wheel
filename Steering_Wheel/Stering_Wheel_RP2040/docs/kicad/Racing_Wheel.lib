@@ -1,0 +1,361 @@
+# KiCad Footprint Library - RP2040 Racing Steering Wheel PCB
+# All footprints derived from button plate v30.dxf and project requirements
+
+# ============================================
+# RP2040-MICROCONTROLLER
+# ============================================
+# (Footprint "RP2040-SMD"
+#   (at 0 0)
+#   (layers F.Cu F.Paste F.SilkS)
+#   (text "RP2040-SMD" (at 0 0) (layer F.SilkS))
+#   # 40 pads for RP2040 - user to complete with proper pad numbers
+#   # Based on RP2040 datasheet: 40-pad QFN with 2.54mm pitch
+#   # Pads 1-40 around the chip
+# )
+
+# ============================================
+# BUTTON HOLES (from DXF button plate v30)
+# ============================================
+(Footprint "Button_Hole"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Button_Hole" (at 0 0) (layer F.SilkS))
+  
+  # 8 mounting holes for tactile buttons (12mm diameter buttons)
+  # From DXF: holes are for buttons
+  (pad 1 thru_hole "B1_MOUNT" (circle 3.2) (net BUTTON_1)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 2 thru_hole "B2_MOUNT" (circle 3.2) (net BUTTON_2)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 3 thru_hole "B3_MOUNT" (circle 3.2) (net BUTTON_3)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 4 thru_hole "B4_MOUNT" (circle 3.2) (net BUTTON_4)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 5 thru_hole "B5_MOUNT" (circle 3.2) (net BUTTON_5)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 6 thru_hole "B6_MOUNT" (circle 3.2) (net BUTTON_6)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 7 thru_hole "B7_MOUNT" (circle 3.2) (net BUTTON_7)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  (pad 8 thru_hole "B8_MOUNT" (circle 3.2) (net BUTTON_8)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 3.2)
+  )
+  
+  # LCD area marker (larger rectangle from DXF)
+  (fp_text "LCD_AREA" (at 0 30) (layer F.SilkS) (t "Larger rect: 8-digit LCD" (halign "center" "valign" "top")))
+  
+  # LED area marker (smaller rectangle from DXF)
+  (fp_text "LED_AREA" (at 0 -30) (layer F.SilkS) (t "Smaller rect: LED strip" (halign "center" "valign" "bottom")))
+)
+
+# ============================================
+# LCD 8-DIGIT 7-SEGMENT DISPLAY
+# ============================================
+(Footprint "LCD_8Segment"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "LCD_8Segment" (at 0 0) (layer F.SilkS))
+  
+  # Keepout area for 8-digit LCD (from DXF - bigger rectangle)
+  # Approximate: 50mm × 10mm for 8-digit SPI display
+  (fp_text "LCD_8DIGIT_KEEPOUT" (at 0 0) (layer F.SilkS) (t "Keepout: 50×10mm for LCD" (halign "center" "valign" "middle")))
+  
+  # Silk screen rectangle indicating LCD position
+  (fLines "LCD_RECT"
+    (start -25 -5)
+    (end 25 5)
+    (layer F.SilkS)
+    (width 0.2)
+  )
+  
+  # Keepout - no copper under LCD area
+  (fp_text "LCD_KEEPOUT" (at 0 20) (layer F.SilkS) (t "Remove copper: LCD area" (halign "center" "valign" "top")))
+  
+  # Keepout for LED area
+  (fp_text "LED_KEEPOUT" (at 0 -20) (layer F.SilkS) (t "LED strip area below" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# WS2812B LED STRIP
+# ============================================
+(Footprint "LED_Strip"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "LED_Strip" (at 0 0) (layer F.SilkS))
+  
+  # 4-pin WS2812B LED strip pads
+  # From DXF: smaller rectangle for LED strip
+  
+  # Pin 1 - DATA (connects to RP2040 GPIO6/D6)
+  (pad 1 thru_hole "LED_DATA" (circle 1.5) (net GPIO6)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  
+  # Pin 2 - VCC (5V power)
+  (pad 2 thru_hole "LED_VCC" (circle 1.5) (net 5V)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  
+  # Pin 3 - GND
+  (pad 3 thru_hole "LED_GND" (circle 1.5) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  
+  # Pin 4 - Optional NC or additional ground
+  (pad 4 thru_hole "LED_NC" (circle 1.5) (net NC)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.0)
+  )
+  
+  # Keepout area matching smaller rectangle from DXF
+  # WS2812B 8-LED strip: ~45mm long × 10mm wide
+  (fp_text "LED_KEEP" (at 0 -40) (layer F.SilkS) (t "Keepout: ~45×10mm LED strip area" (halign "center" "valign" "top")))
+  
+  # Keepout zone
+  (zone_keypads "LED_KEEPOUT"
+    (at 0 0)
+    (size 45 10)
+    (drill 0)
+    (status "no")
+  )
+)
+
+# ============================================
+# 3.5mm 4-POLE TRRS JACK (UART to Pedal Box)
+# ============================================
+(Footprint "Jack_3.5mm_TRRS"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Jack_3.5mm_TRRS" (at 0 0) (layer F.SilkS))
+  
+  # 4 poles for UART connection to pedal box
+  # Tip=TX, Ring1=RX, Ring2=GND, Sleeve=NC
+  
+  # Pin 1 - Tip (UART TX to pedal box)
+  (pad 1 thru_hole "JACK_TIP" (circle 1.5) (net UART_TX)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  
+  # Pin 2 - Ring 1 (UART RX from pedal box)
+  (pad 2 thru_hole "JACK_RING1" (circle 1.5) (net UART_RX)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  
+  # Pin 2 - Ring 2 (Signal GND)
+  (pad 3 thru_hole "JACK_RING2" (circle 1.5) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  
+  # Pin 4 - Sleeve (NC or Shield)
+  (pad 4 thru_hole "JACK_SLEEVE" (circle 1.5) (net NC)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  
+  # Keepout area for jack mounting
+  (fp_text "JACK_KEEP" (at 0 25) (layer F.SilkS) (t "3.5mm Jack: Tip=TX, R1=RX, R2=GND" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# KY-040 ROTARY ENCODER (2 units)
+# ============================================
+(Footprint "Encoder_KY040"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Encoder_KY040" (at 0 0) (layer F.SilkS))
+  
+  # 3 pins: A, B, Switch
+  # From existing project: 2 encoders for Menu and Volume
+  
+  # Encoder 1 - Menu encoder
+  (pad 1 thru_hole "ENC1_A" (circle 1.5) (net GPIO9)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  (pad 2 thru_hole "ENC1_B" (circle 1.5) (net GPIO10)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  (pad 3 thru_hole "ENC1_SW" (circle 1.5) (net GPIO8)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  
+  # Encoder 2 - Volume encoder (same footprint, different net labels)
+  (pad 4 thru_hole "ENC2_A" (circle 1.5) (net GPIO9)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  (pad 5 thru_hole "ENC2_B" (circle 1.5) (net GPIO10)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+  (pad 6 thru_hole "ENC2_SW" (circle 1.5) (net GPIO8)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.5)
+  )
+)
+
+# ============================================
+# TACTILE BUTTONS (8 units)
+# ============================================
+(Footprint "Button_Tactile"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Button_Tactile" (at 0 0) (layer F.SilkS))
+  
+  # 2-pad through-hole tactile button
+  # NO (Normally Open) and C (Common)
+  
+  # Pin 1 - NO (Normally Open)
+  (pad 1 thru_hole "BUTTON_NO" (circle 1.2) (net BUTTON_SIG)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.2)
+  )
+  
+  # Pin 2 - C (Common - to GND)
+  (pad 2 thru_hole "BUTTON_COMMON" (circle 1.2) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 1.2)
+  )
+  
+  # Keepout area note
+  (fp_text "BUTTON_KEEP" (at 0 15) (layer F.SilkS) (t "8 buttons: D25-D13, D16-D9" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# BH1750 I2C LIGHT SENSOR
+# ============================================
+(Footprint "BH1750"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "BH1750" (at 0 0) (layer F.SilkS))
+  
+  # 20-pad SMD I2C sensor
+  # From project: connects to D2 (SDA) and D3 (SCL)
+  
+  # Power pins
+  (pad 1 thru_pad_hole "VCC" (circle 0.6) (net 3V3)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.6)
+  )
+  (pad 2 thru_pad_hole "GND" (circle 0.6) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.6)
+  )
+  
+  # I2C pins
+  (pad 3 thru_pad_hole "SDA" (circle 0.6) (net GPIO2)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.6)
+  )
+  (pad 4 thru_pad_hole "SCL" (circle 0.6) (net GPIO3)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.6)
+  )
+  
+  # Additional I2C and power pads for BH1750
+  # Pads 4-20 for the complete BH1750 module
+  # Pads 5-6: No connect or test points
+  # Pads 7-8: Additional I2C addresses
+  # Pads 9-10: Keyboard matrix if needed
+  # etc.
+  
+  # Keepout text
+  (fp_text "BH_KEEP" (at 0 -25) (layer F.SilkS) (t "I2C: SDA=D2, SCL=D3" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# TYPE-C USB RECEPTACLE
+# ============================================
+(Footprint "Connector_USB-C"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Connector_USB-C" (at 0 0) (layer F.SilkS))
+  
+  # USB Type-C 12-pin receptacle
+  # Standard Type-C pinout
+  
+  # Pin 1 - VBUS (5V power)
+  (pad 1 thru_hole "VBUS" (circle 0.6) (net 5V)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.6)
+  )
+  
+  # Pin 2 - D-
+  (pad 2 thru_hole "D-" (circle 0.4) (net D-)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.4)
+  )
+  
+  # Pin 3 - D+
+  (pad 3 thru_hole "D+" (circle 0.4) (net D+)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.4)
+  )
+  
+  # Pin 4 - ID (Orientation pin)
+  (pad 4 thru_hole "ID" (circle 0.4) (net NC)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.4)
+  )
+  
+  # Pin 5 - GND
+  (pad 5 thru_hole "GND" (circle 0.6) (net GND)
+    (tDimension "F.Cu") (eDimension "F.Cu") (drill 0.6)
+  )
+  
+  # Remaining pins 5-12 for complete Type-C implementation
+  # Pins 5-12: GND, D+, D-, SBU1, SBU1, VBUS, CC1, CC2
+  # (Simplified: user to complete with full Type-C footprint)
+  
+  # Keepout for PCB edge
+  (fp_text "USB_KEEP" (at 0 30) (layer F.SilkS) (t "Type-C: D+/D- for USB data, VBUS for power" (halign "center" "valign" "top")))
+)
+
+
+# ============================================
+# RP2040 Reset Button
+# ============================================
+(Footprint "Reset_Button"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Reset_Button" (at 0 0) (layer F.SilkS))
+  
+  # Through-hole pads for reset button
+  # Usually a momentary button with 2 pins
+  (pad 1 thru_hole "RESET_NC" (circle 1.5) (net NC)
+    (tDimension "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+  )
+  (pad 2 thru_hole "RESET_GND" (circle 1.5) (net GND)
+    (tDimension "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+  )
+  
+  # Silkscreen label
+  (fp_text "Reset" (at 0 15) (layer F.SilkS) (t "Reset" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# RP2040 Boot Button (BOOTSEL)
+# ============================================
+(Footprint "Boot_Button"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "Boot_Button" (at 0 0) (layer F.SilkS))
+  
+  # Connects GPIO22 to GND to trigger bootloader
+  # Or use the standard RP2040 mass storage mode
+  (pad 1 thru_hole "BOOT_22" (circle 1.5) (net GPIO22)
+    (tDimension "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+  )
+  (pad 2 thru_hole "BOOT_GND" (circle 1.5) (net GND)
+    (tDimension "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+  )
+  
+  # Silkscreen: "BOOT" label
+  (fp_text "Boot" (at 0 15) (layer F.SilkS) (t "Hold during USB plug" (halign "center" "valign" "top")))
+)
+
+# ============================================
+# OTA Capability Summary
+# ============================================
+(Footprint "OTA_Methods"
+  (at 0 0)
+  (layers F.Cu F.Paste F.SilkS)
+  (text "OTA_Methods" (at 0 0) (layer F.SilkS))
+  
+  # Document OTA methods on silkscreen
+  (fp_text "OTA Option 1" (at 0 20) (layer F.SilkS) (t "1. Mass Storage: BOOTSEL + USB drag .uf2" (halign "center" "valign" "top")))
+  (fp_text "OTA Option 2" (at 0 10) (layer F.SilkS) (t "2. UART OTA: via 3.5mm TRRS jack" (halign "center" "valign" "top")))
+  (fp_text "OTA Option 3" (at 0 0) (layer F.SilkS) (t "3. Internal bootloader: checks UART on startup" (halign "center" "valign" "top")))
+  (fp_text "OTA Option 4" (at 0 -10) (layer F.SilkS) (t "4. Optional: Add ESP8266/32 for true wireless OTA" (halign "center" "valign" "top")))
+)

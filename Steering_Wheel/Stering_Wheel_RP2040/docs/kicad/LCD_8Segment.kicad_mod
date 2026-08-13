@@ -1,0 +1,39 @@
+# KiCad Mod File - 8-Digit 7-Segment SPI Display
+# From button plate v30.dxf - bigger rectangle for LCD display
+# Units: mm
+
+# Description: Footprint for 8-digit 7-segment SPI display (MAX7219 or similar)
+# Placement: Larger rectangle from DXF button plate v30
+
+# Display area - keepout for the 8-digit display
+# Standard 8-digit 7-segment SPI display (like MAX7219-driven)
+# Typical dimensions: ~50mm wide × 10mm tall
+
+# Display pad area - create a rectangle keepout
+(fp_text "8SEG_DISPLAY" (at 0 0) (layer F.SilkS) (h "2.0" (halign "center" "valign" "middle")))
+
+# Keepout area for LCD - remove copper from this region
+# Approximate size for 8-digit display: 50mm × 10mm
+(zone_ref "LCD_KEEPOUT"
+  (at 0 0)
+  (layers F.Cu B.Cu In1.Cu In2.Cu In3.Cu In4.Cu B.Mask F.Mask)
+  (status "no")  ; No copper in this area
+)
+
+# Silk screen rectangle for LCD placement
+(fLines "LCD_RECT"
+  (start -25 -5)
+  (end 25 5)
+  (layer F.SilkS)
+  (width 0.15)
+)
+
+# Text label
+(fp_text "LCD_8DIGIT" (at 0 8) (layer F.SilkS) (t "8-DIGIT SPI" (halign "center" "valign" "middle")))
+
+# Keepout for LED area at bottom
+(fp_text "LED_KEEPOUT" (at 0 -15) (layer F.SilkS) (t "LED Strip Area" (halign "center" "valign" "top")))
+
+# LED rectangle from DXF - smaller rectangle for WS2812B LED strip
+# WS2812B strip typical width: ~15mm for 8 LEDs
+(fp_text "LED_STRIP" (at 0 -25) (layer F.SilkS) (t "WS2812B-8LED" (halign "center" "valign" "top")))

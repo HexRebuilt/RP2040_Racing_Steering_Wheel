@@ -1,0 +1,41 @@
+# KiCad Mod File - WS2812B LED Strip
+# From button plate v30.dxf - smaller rectangle for LED strip
+# Units: mm
+
+# Description: WS2812B LED Strip footprint for 8 LEDs
+# Placement: Smaller rectangle from DXF button plate v30
+
+# LED Strip pads - 4 pins typical for WS2812B
+# Data, Power, Ground, optionally Ground
+
+(fp_text "WS2812B_STRIP" (at 0 0) (layer F.SilkS) (h "1.5" (halign "center" "valign" "middle")))
+
+# LED Strip 4-pin through-hole pads
+# WS2812B: DATA, VCC, GND, (optional)
+
+# Pin 1 - DATA (connects to RP2040 GPIO6)
+(pad 1 thru_hole "LED_DATA" (circle 1.5) (net GPIO6)
+  (tDimensions "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+)
+
+# Pin 2 - VCC (5V power)
+(pad 2 thru_hole "LED_VCC" (circle 1.5) (net 5V)
+  (tDimensions "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+)
+
+# Pin 3 - GND
+(pad 3 thru_hole "LED_GND" (circle 1.5) (net GND)
+  (tDimensions "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+)
+
+# Pin 4 - Optional NC or additional ground
+(pad 4 thru_hole "LED_NC" (circle 1.5) (net NC)
+  (tDimensions "F.Cu") (eDimensions "F.Cu") (drill 1.0)
+)
+
+# Keepout area under LED strip - matches smaller rectangle from DXF
+# Typical 8-LED WS2812B strip: ~45mm long × 10mm wide
+(fp_text "LED_KEEP" (at 0 -35) (layer F.SilkS) (t "Keepout: LED strip area ~45×10mm" (halign "center" "valign" "top")))
+
+# Reference designator
+(fp_text "ReferenceDesignator" (at 0 15) (layer F.SilkS) (t "LED1" (halign "center" "valign" "bottom")))

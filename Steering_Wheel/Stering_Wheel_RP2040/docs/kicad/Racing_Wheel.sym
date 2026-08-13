@@ -1,0 +1,447 @@
+# KiCad Symbol Library - RP2040 Racing Steering Wheel
+# Symbols mapped to Racing_Wheel.lib footprints
+
+# ============================================
+# RP2040 Microcontroller Symbol
+# ============================================
+(Symbol "RP2040"
+  (prefix U)
+  (description "RP2040 Microcontroller (Raspberry Pi)")
+  (at 0 0)
+  # Connect to Racing_Wheel.lib footprints
+  (property "Footprint" "RP2040-SMD" (at 0 0) ())
+  # 40 GPIO pins - simplified symbol
+  # See: Raspberry Pi RP2040 Datasheet
+  
+  # Power inputs
+  (pin
+    (name "VBUS" "5V" "power input")
+    (number "1")
+    (type "power")
+  )
+  (pin
+    (name "GPIO0" "D0" "input")
+    (number "2")
+    (type "input")
+  )
+  (pin
+    (name "GPIO1" "D1" "input")
+    (number "3")
+    (type "input")
+  )
+  (pin
+    (name "GPIO2" "D2/BH1750_SDA" "input_output")
+    (number "4")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO3" "D3/BH1750_SCL" "input_output")
+    (number "5")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO4" "D4" "input_output")
+    (number "6")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO5" "D5" "input_output")
+    (number "7")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO6" "D6/WS2812B_DATA" "input_output")
+    (number "8")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO7" "D7/MENU_PRESS" "input_output")
+    (number "9")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO8" "D8/VOLUME_PRESS" "input_output")
+    (number "10")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO9" "D9/ENCODER_MENU_A" "input_output")
+    (number "12")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO10" "D10/ENCODER_VOLUME_A" "input_output")
+    (number "14")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO11" "D11/MENU_COUNT" "input_output")
+    (number "14")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO12" "D12/MENU_UP" "input_output")
+    (number "14")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO13" "D13/RADIO_BLUE" "input_output")
+    (number "14")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO14" "D14/RADIO_GREEN" "input_output")
+    (number "14")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO15" "D15/RADIO_RED" "input_output")
+    (number "14")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO16" "D16/ECU_WHITE" "input_output")
+    (number "16")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO17" "D17/ECU_YELLOW" "input_output")
+    (number "18")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO18" "D18/ECU_RED" "input_output")
+    (number "20")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO19" "D19/RADIO_BACK" "input_output")
+    (number "22")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO20" "D20/RADIO_NEXT" "input_output")
+    (number "24")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO21" "D21/RADIO_BLACK" "input_output")
+    (number "24")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO22" "D22/RADIO_BLUE" "input_output")
+    (number "26")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO23" "D23/RADIO_RED" "input_output")
+    (number "28")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO24" "D24/RADIO_GREEN" "input_output")
+    (number "30")
+    (type "input_output")
+  )
+  (pin
+    (name "GPIO25" "D25/RADIO_GREEN" "input_output")
+    (number "32")
+    (type "input_output")
+  )
+  # Power pins
+  (pin
+    (name "3V3" "3.3V" "power_output")
+    (number "34")
+    (type "power")
+  )
+  (pin
+    (name "5V" "5V" "power_input")
+    (number "35")
+    (type "power")
+  )
+  (pin
+    (name "GND" "GROUND" "power_input")
+    (number "36,39,40")
+    (type "power")
+  )
+)
+
+# ============================================
+# 3.5mm TRRS Jack Symbol (UART to Pedal Box)
+# ============================================
+(Symbol "Jack_3.5mm_TRRS"
+  (prefix J)
+  (description "3.5mm 4-Pole TRRS Jack - UART to Pedal Box")
+  (at 0 0)
+  
+  # Tip = UART TX, Ring1 = UART RX, Ring2 = GND, Sleeve = NC
+  (pin
+    (name "Tip" "UART_TX" "output")
+    (number "1")
+    (type "signal")
+  )
+  (pin
+    (name "Ring1" "UART_RX" "input")
+    (number "2")
+    (type "signal")
+  )
+  (pin
+    (name "Ring2" "GND" "power")
+    (number "3")
+    (type "power")
+  )
+  (pin
+    (name "Sleeve" "NC" "no_connect")
+    (number "4")
+    (type "no_connect")
+  )
+)
+
+# ============================================
+# Type-C USB Symbol
+# ============================================
+(Symbol "Connector_USB-C"
+  (prefix P1)
+  (description "USB Type-C Receptacle")
+  (at 0 0)
+  
+  # VBUS, D-, D+, ID, GND
+  (pin
+    (name "VBUS" "5V" "power_input")
+    (number "1")
+    (type "power")
+  )
+  (pin
+    (name "D-" "D-" "signal")
+    (number "2")
+    (type "signal")
+  )
+  (pin
+    (name "D+" "D+" "signal")
+    (number "3")
+    (type "signal")
+  )
+  (pin
+    (name "ID" "ID" "signal")
+    (number "4")
+    (type "signal")
+  )
+  (pin
+    (name "GND" "GND" "power")
+    (number "5")
+    (type "power")
+  )
+)
+
+# ============================================
+# KY-040 Encoder Symbol (2 units)
+# ============================================
+(Symbol "Encoder_KY040"
+  (prefix EN)
+  (description "KY-040 Rotary Encoder - Menu/Volume")
+  (at 0 0)
+  
+  # Encoder A, B, Switch
+  (pin
+    (name "A" "GPIO9/D9" "input")
+    (number "1")
+    (type "input")
+  )
+  (pin
+    (name "B" "GPIO10/D10" "input")
+    (number "2")
+    (type "input")
+  )
+  (pin
+    (name "Switch" "GPIO8/D8" "input")
+    (number "3")
+    (type "input")
+  )
+)
+
+# Second encoder (same footprint, different net labels)
+(Symbol "Encoder_KY040_2"
+  (prefix EN2)
+  (description "KY-040 Rotary Encoder Volume - Second unit")
+  (at 0 0)
+  
+  (pin
+    (name "A" "GPIO9/D9" "input")
+    (number "1")
+    (type "input")
+  )
+  (pin
+    (name "B" "GPIO10/D10" "input")
+    (number "2")
+    (type "input")
+  )
+  (pin
+    (name "Switch" "GPIO8/D8" "input")
+    (number "3")
+    (type "input")
+  )
+)
+
+# ============================================
+# Tactile Button Symbol (8 units)
+# ============================================
+(Symbol "Button_Tactile"
+  (prefix B)
+  (description "Tactile Button - normally open to GND")
+  (at 0 0)
+  
+  # NO (Normally Open) and Common
+  (pin
+    (name "NO" "BUTTON_SIG" "input")
+    (number "1")
+    (type "input")
+  )
+  (pin
+    (name "C" "GND" "power")
+    (number "2")
+    (type "power")
+  )
+)
+
+# Create 8 button symbols with different net labels
+# Button 1: Radio Green
+(Symbol "B1"
+  (prefix B)
+  (description "Tactile Button - Radio Green")
+  (at 0 0)
+  (pin
+    (name "NO" "GPIO25/D25" "input")
+    (number "1")
+    (type "input")
+  )
+  (pin
+    (name "C" "GND" "power")
+    (number "2")
+    (type "power")
+  )
+)
+
+# Button 2: Radio Red
+(Symbol "B2"
+  (prefix B2)
+  (description "Tactile Button - Radio Red")
+  (at 0 0)
+  (pin
+    (name "NO" "GPIO24/D24" "input")
+    (number "1")
+    (type "input")
+  )
+  (pin
+    (name "C" "GND" "power")
+    (number "2")
+    (type "power")
+  )
+)
+
+# Continue for all 8 buttons...
+# (User to create remaining B3-B8 symbols with GPIO23-D13, D16-D9)
+
+# ============================================
+# BH1750 Light Sensor Symbol
+# ============================================
+(Symbol "BH1750"
+  (prefix U2)
+  (description "BH1750 I2C Light Sensor")
+  (at 0 0)
+  
+  # VCC, GND, SDA, SCL
+  (pin
+    (name "VCC" "3V3" "power_input")
+    (number "1")
+    (type "power")
+  )
+  (pin
+    (name "GND" "GROUND" "power")
+    (number "2")
+    (type "power")
+  )
+  (pin
+    (name "SDA" "D2/I2C_DATA" "input_output")
+    (number "3")
+    (type "input_output")
+  )
+  (pin
+    (name "SCL" "D3/I2C_CLOCK" "input_output")
+    (number "4")
+    (type "input_output")
+  )
+  
+  # Additional pins for complete BH1750 module
+  # Pins 5-20 for complete module functionality
+)
+
+# ============================================
+# WS2812B LED Strip Symbol
+# ============================================
+(Symbol "LedStrip_WS2812B"
+  (prefix LED1)
+  (description "WS2812B LED Strip")
+  (at 0 0)
+  
+  # DATA, VCC, GND pins
+  (pin
+    (name "DATA" "D6/LED_DATA" "signal_output")
+    (number "1")
+    (type "signal")
+  )
+  (pin
+    (name "VCC" "5V" "power_input")
+    (number "2")
+    (type "power")
+  )
+  (pin
+    (name "GND" "GROUND" "power")
+    (number "3")
+    (type "power")
+  )
+  
+  # Optional 4th pin
+  (pin
+    (name "NC" "NC" "no_connect")
+    (number "4")
+    (type "no_connect")
+  )
+)
+
+# ============================================
+# RP2040 Power Symbols
+# ============================================
+(Symbol "POWER_3V3"
+  (prefix P3V3)
+  (description "3.3V Power Rail")
+  (at 0 0)
+  (pin
+    (name "3V3" "3.3V" "power_output")
+    (number "1")
+    (type "power")
+  )
+)
+
+(Symbol "POWER_5V"
+  (prefix P5V)
+  (description "5V Power Rail")
+  (at 0 0)
+  (pin
+    (name "5V" "5V" "power_input")
+    (number "1")
+    (type "power")
+  )
+)
+
+(Symbol "POWER_GND"
+  (prefix GND)
+  (description "Ground Rail")
+  (at 0 0)
+  (pin
+    (name "GND" "GND" "power")
+    (number "1")
+    (type "power")
+  )
+)
+
