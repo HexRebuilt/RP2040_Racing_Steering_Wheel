@@ -235,22 +235,22 @@ public:
             SetTachometer();
             break;
         case satelliteNumber:
-            // Serial.println("satellites");
+            Serial.println("satellites");
             Satellites();
             TimeToReset();
             break;
         case clock:
-            // Serial.println("clock");
+            Serial.println("clock");
             DisplayClock();
             TimeToReset();
             break;
         case bright:
-            // Serial.println("bright");
+            Serial.println("bright");
             BrightChange();
             TimeToReset();
             break;
         default:
-            // Serial.println("tachometer");
+            Serial.println("tachometer");
             currentstate = tachometer;
             SetTachometer();
             break;

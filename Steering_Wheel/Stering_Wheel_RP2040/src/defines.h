@@ -21,7 +21,7 @@
 #define NUM_LEDS            8
 #define LED_STRYPE_TYPE     WS2812B
 #define LED_STRYPE_COLOR    GRB
-#define LED_DELAY           5//ms
+#define LED_DELAY           50//ms
 #define GREEN_LED_INDEX     4
 #define YELLOW_LED_INDEX    1
 #define RED_LED_INDEX       0
