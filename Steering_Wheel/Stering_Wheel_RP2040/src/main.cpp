@@ -12,7 +12,7 @@
 
 #include "apps/HumanInterface/human_interface.h"
 #include "apps/HumanInterface/Lcd8Digit.h"
-// #include "apps/HumanInterface/LedBar.h"
+#include "apps/HumanInterface/LedBar.h"
 
 String messageIn = "\n";
 String split_messageIn[3];
@@ -235,6 +235,8 @@ void setup()
 
   // lcd and led initialization
   lcd8Digit.Initialize();
+  LedBar ledBar;
+  ledBar.Initialize();
   Serial.println("LCD & LED configuration DONE");
 
   // pinMode(TESTPIN,INPUT_PULLUP);

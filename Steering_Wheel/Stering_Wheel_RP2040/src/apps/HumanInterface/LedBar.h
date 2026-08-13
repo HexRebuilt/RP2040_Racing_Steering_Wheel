@@ -5,7 +5,8 @@ class LedBar : public HumanInterface
 private:
     /* data */
     int ledbrightness = MAX_BRIGHT_LEDS; //initial level
-    CRGB leds[NUM_LEDS];
+    Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_STRYPE_PIN, NEO_GRB);
+    uint32_t leds[NUM_LEDS];
     uint8_t offled = NUM_LEDS;
     int rpmDC = 0;
 
@@ -14,12 +15,14 @@ public:
 
     void Initialize()
     {
-        FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
-        FastLED.setBrightness(MAX_BRIGHT_LEDS);
+        strip.begin();
+        strip.show(); // Initialize all pixels to 'off'
+        strip.setBrightness(MAX_BRIGHT_LEDS);
         for (int i = 0; i < NUM_LEDS; i++)
         {
             SetRPMDC((i + 1) * 10 + 5);
             Update();
+            strip.show();  // ← ADDED: Push color changes to LEDs
             delay(50);
         }
 
@@ -59,7 +62,7 @@ public:
         }*/
         ledbrightness = map(value,MIN_BRIGHT_LEDS, MAX_BRIGHT_LEDS, 10, 100);
         //changing the brightness
-        FastLED.setBrightness(ledbrightness);
+        strip.setBrightness(ledbrightness);
         
     }
 
@@ -73,65 +76,63 @@ public:
         {
             for (int i = 0; i < NUM_LEDS; i++)
             {
-                leds[i] = CRGB::Black;
+                strip.setPixelColor(i, 0);
                 delay(LED_DELAY);
             }
-            FastLED.show();
+            strip.show();
             return;
         }
 
         //shiftlight needs to happen asap
-        if (rpmDC >= SHIFTLIGHT_RPM_DC)
+        if (rpmDC >= SHIFTLIGHT_RPM)
         {
             //Serial.println("SHIFTLIGHT");
             for (int i = 0; i < NUM_LEDS; i++)
             {
-                leds[i] = CRGB::Blue;
+                strip.setPixelColor(i, strip.Color(0, 0, 255));
                 delay(LED_DELAY);
             }
-            FastLED.show();
+            strip.show();
             delay(100);
             for (int i = 0; i < NUM_LEDS; i++)
             {
-                leds[i] = CRGB::Black;
+                strip.setPixelColor(i, 0);
                 delay(LED_DELAY);
             }
-            FastLED.show();
+            strip.show();
             return;
         }
 
-        offled = (uint8_t)map(rpmDC, 0, SHIFTLIGHT_RPM_DC, NUM_LEDS, 0);
+        offled = (uint8_t)map(rpmDC, 0, SHIFTLIGHT_RPM, NUM_LEDS, 0);
         //Serial.println(offled);
         for (int i = 0; i < offled; i++)
         {
-            leds[i] = CRGB::Black;
+            strip.setPixelColor(i, 0);
             delay(LED_DELAY);
         }
         for (int i = offled; i < NUM_LEDS; i++) //the leds are mounted upside down
         {
             //those are the leds on
-            leds[i] = CRGB::Purple;
-            //adding the color logic
             if (i > GREEN_LED_INDEX)
             {
-                leds[i] = CRGB::Green;
+                strip.setPixelColor(i, strip.Color(0, 255, 0)); // Green
                 delay(LED_DELAY);
                 continue;
             }
             if (i <= GREEN_LED_INDEX && i > YELLOW_LED_INDEX)
             {
-                leds[i] = CRGB::Yellow;
+                strip.setPixelColor(i, strip.Color(255, 150, 0)); // Yellow
                 delay(LED_DELAY);
                 continue;
             }
             else
             {
-                leds[i] = CRGB::Red;
+                strip.setPixelColor(i, strip.Color(255, 0, 0)); // Red
                 delay(LED_DELAY);
                 continue;
             }
         }
-        FastLED.show();
+        strip.show();
     }
 
     void SetRPMDC(int newRPM_DC)
