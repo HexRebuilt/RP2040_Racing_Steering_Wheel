@@ -281,6 +281,7 @@ void loop()
     // Parse GPS data if message starts with "g."
     if (messageIn.startsWith("g.")) {
       parseGPSData(messageIn);
+     /*
       Serial.print("GPS - Speed: ");
       Serial.print(gpsSpeed);
       Serial.print(" Satellites: ");
@@ -291,13 +292,27 @@ void loop()
       Serial.print(gpsMinutes);
       Serial.print(":");
       Serial.println(gpsSeconds);
+      */
     }
-
     //Serial.print("Message recieved: ");
     //Serial.println(messageIn);
-    // use sscanf to detect the parts
-   
+
+    if (messageIn.startsWith("LowBeams")){
+      Serial.print("Message recieved: ");
+      Serial.println(messageIn);
+      if(messageIn.compareTo("LowBeams ON"))
+      {
+        Serial.print("Low Beams ON detected\n");
+        lcd8Digit.setLowBeamStatus(true);
+      }
+      else{
+        Serial.print("Low Beams OFF detected\n");
+        lcd8Digit.setLowBeamStatus(false);
+      }
+    }
+    
   }
+
 
   // reading the encoders
   menuEncoder.Steps();
