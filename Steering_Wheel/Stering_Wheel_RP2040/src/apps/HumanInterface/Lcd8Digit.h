@@ -12,7 +12,7 @@ private:
     short brightness = 100;
     String brightChange = "", hud = "";
     unsigned long switchtime = 0;
-    boolean day = true;
+    boolean lowBeamStatus = false;
     short encoderValue = 0, encoderDelta = 0;
 
     enum State : uint8_t
@@ -321,6 +321,27 @@ public:
     short GetBrightness()
     {
         return brightness;
+    }
+
+    void setLowBeamStatus(bool newStatus)
+    {
+        if (newStatus != lowBeamStatus){
+            Serial.print("Low beam status change detected\n");
+            lowBeamStatus = newStatus;
+            if(lowBeamStatus){
+                Serial.print("LCD light to min\n");
+                lcdbrightness = MIN_BRIGHT_LCD; //false = low beam
+            }
+            else{
+                Serial.print("LCD light to max\n");
+                lcdbrightness = MAX_BRIGHT_LCD;
+            }
+            lcd.setIntensity(0,lcdbrightness); //true = day
+        }
+    }
+
+    bool getLowBeamStatus(){
+        return lowBeamStatus;
     }
 };
 

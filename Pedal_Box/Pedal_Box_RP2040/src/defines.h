@@ -35,5 +35,7 @@ Source: https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-01-technica
 #include "buttonIds.h"
 
 #define DEFAULTDELAY    10
-# Low-beam state check
-#define LOW_BEAM_ON (!digitalRead(DIN1))
+// Low-beam state check
+#define LOW_BEAM_PIN    p29 //GP14
+#define LOW_BEAM_UPDATE_FREQUENCY 500
+

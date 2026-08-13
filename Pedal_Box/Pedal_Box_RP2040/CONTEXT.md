@@ -225,3 +225,141 @@ A compact RP2040-based IO board for automotive cabin use, designed to interface 
 - `architecture.md` - Complete system architecture & BOM
 - `CONTEXT.md` - Architecture decisions & change log
 - `sheet1_power.sch` through `sheet8_jst_connectors.sch` - All 8 KiCad schematic sheets
+## 9. Low/High Beam Input Signals (OR-Diode Configuration)
+
+### 9.1 Purpose
+Add dedicated monitoring of low-beam and high-beam headlight status to the RP2040 firmware. Two 12V automotive signals are combined using an OR-diode configuration so the system sees either beam active.
+
+### 9.2 Circuit Design: OR-Diode Configuration
+
+Two 12V signals (low-beam and high-beam) feed into a common optocoupler input via individual diodes:
+
+```
+          12V Low-Beam          12V High-Beam
+                |                   |
+               R1=470Ω              R2=470Ω
+                |                   |
+              +---+                 +---+
+              |   |                 |   |
+             D1__|                 |__D2
+          Anode|                   |Anode
+               |                   |
+              +---+                 +---+
+               |                   |
+               \    \               \     \
+                \    \               \     \
+                 \    \               \      \--[ 10kΩ ]-- GND (pull-down)
+                \    \               \   GPIO
+                 \    \               /
+                  \    \             /
+                   \    \           /
+                    \    \         /
+                     \    \       /
+                      \    \     /
+                       \    \   /
+                 3.5mm Jack or PCB test point
+                          |
+                       (shared optocoupler input)
+```
+
+### 9.3 How It Works
+
+| Condition | D1 (Low-Beam) | D2 (High-Beam) | Optocoupler LED | GPIO State |
+|-----------|---------------|----------------|-----------------|------------|
+| **Low-Beam ON, High-Beam OFF** | ON (forward bias) | OFF (reverse bias) | LED ON (via D1) | GPIO LOW (12V present) |
+| **Low-Beam OFF, High-Beam ON** | OFF (reverse bias) | ON (forward bias) | LED ON (via D2) | GPIO LOW (12V present) |
+| **Both OFF** | OFF | OFF | LED OFF | GPIO HIGH (12V absent) |
+| **Both ON** | ON | ON | LED ON (via both) | GPIO LOW (12V present) |
+
+**Key Features**:
+- **OR logic**: Either signal activating will turn on the optocoupler LED
+- **Diode isolation**: Prevents backflow between the two 12V sources
+- **Current limiting**: 470Ω resistor per channel limits LED current to ~25mA
+- **Safe**: Each 12V path has its own current-limiting resistor and diode
+
+### 9.4 Pin Assignments
+
+| Signal | DIN Pin | GPIO | Description |
+|--------|---------|------|-------------|
+| **Low-Beam Input** | DIN1 | GPIO0 | 12V when low-beam headlights are on |
+| **High-Beam Input** | DIN2 | GPIO1 | 12V when high-beam headlights are on |
+
+### 9.5 Firmware Integration
+
+```cpp
+// Pin definitions (add to defines.h)
+#define BEAM_LOW  DIN1  // GPIO0 - Low-beam optocoupler input
+#define BEAM_HIGH DIN2  // GPIO1 - High-beam optocoupler input
+
+// Read beam status in loop()
+void checkBeams() {
+    bool lowBeam = digitalRead(BEAM_LOW);  // LOW = low-beam ON
+    bool highBeam = digitalRead(BEAM_HIGH);  // HIGH = high-beam ON
+    
+    // System sees "OR" of both: either active = beams on
+    bool beamsActive = !lowBeam || !highBeam;  // OR logic (note: LOW = ON)
+    
+    if (beamsActive) {
+        // At least one beam is on
+        // Can implement: dashboard display, lighting control, etc.
+    }
+}
+```
+
+### 9.6 Wiring to Existing 3.5mm Jack (Optional)
+
+The beam signals can be tapped from the existing vehicle headlight wiring and connected to the 3.5mm jack harness (if following the cabin-only 3.5mm routing), or directly to the DIN1/DIN2 pins on the PCB header.
+
+**Recommended**: Connect directly to DIN1/DIN2 pins on the PCB for simplest installation, since these are isolated inputs and don't share circuitry with the 3.5mm jacks (which are reserved for GPS/radio/steering).
+
+### 9.6 Verification
+
+| Test Condition | Expected Serial Output |
+|----------------|----------------------|
+| Low-beam ON, High-Beam OFF | "Low-beam ACTIVE" |
+| Low-Beam OFF, High-Beam ON | "High-beam ACTIVE" |
+| Both OFF | " beams INACTIVE" |
+| Both ON | " beams ACTIVE (both on)" |
+
+### 9.7 Safety Notes
+
+- ✅ **Isolation**: Both signals isolated from RP2040 via optocouplers
+- ✅ **OR logic**: Either beam active = system detects "beams on"
+- ✅ **Diode isolation**: D1 and D2 prevent 12V cross-talk between low/high beam circuits
+- ✅ **Current limiting**: 470Ω per channel limits current safely
+- ⚠️ **Ensure both 12V sources share common ground**
+- ⚠️ **Do not exceed 12V-15V** on either input (optocoupler rating)
+
+### 9.8 Updated Pinout Summary
+
+```
+DIN1 (GPIO0) ←→ Low-Beam Input (via 470Ω + D1 diode → optocoupler)
+DIN1 (GPIO1) ←→ High-Beam Input (via 470Ω + D2 diode → optocoupler)
+
+Both feed into common optocoupler detection circuit.
+System firmware uses OR logic: beams active if LOW-Beam OR High-Beam is ON.
+```
+
+---
+
+## 10. Updated BOM (Additions)
+
+| Qty | Part | Description | Purpose |
+|-----|------|-------------|---------|
+| 2 | **1N4007 Diode** | Low-beam and high-beam isolation diodes | OR-diode configuration |
+| 2 | **470Ω Resistor** | One per beam input | Current limiting for optocoupler LED |
+| (existing) | PC817 | Already in BOM | Shared optocoupler input (could be new 5th channel or dedicated) |
+
+*Note: If using a dedicated 5th optocoupler channel, add to BOM. If sharing with existing DIN1/DIN2, no extra parts needed beyond the 2×470Ω and 2×1N4007 shown above.*
+
+---
+
+## 9.9 Change Log Additions
+
+| Date | Change | Author |
+|------|--------|--------|
+| 2026-08-13 | Added Low-Beam/High-Beam OR-diode input documentation | HexRebuilt |
+| 2026-08-13 | Added DIN1/DIN2 pin assignments for beam inputs | HexRebuilt |
+| 2026-08-13 | Added firmware `checkBeams()` function skeleton | HexRebuilt |
+| 2026-08-13 | Updated BOM with 2×1N4007 and 2×470Ω for beam inputs | HexRebuilt |
+

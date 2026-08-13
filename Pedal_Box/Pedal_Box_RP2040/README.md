@@ -27,3 +27,8 @@ The `NATIVE_BUILD` preprocessor flag controls conditional compilation:
 - [ ] add the RPM --> from the engine bay diagnostic connector
 - [ ] fix the ledbar
 - [ ] add the possibility to change the time for the potentiometer output from the weel
+
+## Repository Notes
+
+- **.gitignore updates**: Added entries to ignore IDE configuration files (`.vscode/*`), environment files (`.env`, `.env.*`), and credential files (`*.pem`, `*.key`, `credentials`, `secrets`). This helps keep sensitive data out of the repository.
+- **Test suite status**: Unit tests are located in the `test/` directory and can be executed with `platformio test -e native`. The native test environment provides stub implementations, ensuring tests run in CI without hardware.

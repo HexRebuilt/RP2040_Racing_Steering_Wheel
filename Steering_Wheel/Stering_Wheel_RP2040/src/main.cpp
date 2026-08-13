@@ -298,9 +298,9 @@ void loop()
     //Serial.println(messageIn);
 
     if (messageIn.startsWith("LowBeams")){
-      Serial.print("Message recieved: ");
-      Serial.println(messageIn);
-      if(messageIn.compareTo("LowBeams ON"))
+      //Serial.print("Message recieved: ");
+      //Serial.println(messageIn);
+      if(!messageIn.compareTo("LowBeams ON"))
       {
         Serial.print("Low Beams ON detected\n");
         lcd8Digit.setLowBeamStatus(true);

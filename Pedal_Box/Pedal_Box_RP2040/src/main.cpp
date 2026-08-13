@@ -1,4 +1,3 @@
-#ifndef NATIVE_BUILD
 #include <Arduino.h>
 #include <stdlib.h>
 #include <hardware/pio.h>
@@ -15,22 +14,17 @@
 UART SerialGPS(GPSTX, GPSRX, NC, NC);
 TinyGPSPlus gps;
 unsigned int speed, satellites;
-#endif
 
-#ifdef NATIVE_BUILD
-// Native stub
-int main() {
-    return 0;
-}
-#else
 
 //Radio output stuff
 MbedSPI mySPI(CIPO, COPI, SCK);
 #include "mpc4131.h" //functions for the digiral pot
 ButtonHandler buttonHandler;
-Timer timer, speed_timer;
-
+Timer timer, speed_timer, lowBeamTimer;
+//serail uart message to the wheel
 String message;
+
+boolean lowBeamON = false;
 
 void setup()
 {
@@ -53,6 +47,10 @@ void setup()
   digitalPotWrite(0);
   Serial.println("SPI initialized..");
   Serial.println("Configuration DONE");
+
+  //low beam check
+  //pinMode(LOW_BEAM_PIN, INPUT_PULLUP);
+  pinMode(LOW_BEAM_PIN, OUTPUT);
 
   speed_timer.startTimer();
 
@@ -122,53 +120,26 @@ void loop()
     WHEELSERIAL.write(message.c_str());
     speed_timer.startTimer();
   }
-  
 
 
-  delay(DEFAULTDELAY);
-}
-
-#endif
-// LOW_BEAM state monitoring via UART
-// Transmits "LOW_BEAM_ON" or "LOW_BEAM_OFF" every 500ms via Serial1 (WHEELSERIAL)
-
-unsigned long previousBeamMillis = 0;
-bool lastBeamState = LOW_BEAM_ON;
-
-void checkBeamSignal()
-{
-    unsigned long currentMillis = millis();
-
-    if (currentMillis - previousBeamMillis >= 500)
-    {
-        previousBeamMillis = currentMillis;
-
-        bool currentBeamState = LOW_BEAM_ON;
-
-        if (currentBeamState != lastBeamState)
-        {
-            lastBeamState = currentBeamState;
-
-            if (currentBeamState)
-            {
-                // Low-beam is ON - transmit "LOW_BEAM_ON"
-                WHEELSERIAL.write("LOW_BEAM_ON\n");
-            }
-            else
-            {
-                // Low-beam is OFF - transmit "LOW_BEAM_OFF"
-                WHEELSERIAL.write("LOW_BEAM_OFF\n");
-            }
-        }
+  //check the lowbeam status
+  if(lowBeamTimer.timePassed()>= 5500){
+    //lowBeamON = digitalRead(LOW_BEAM_PIN);
+    if(lowBeamON){
+      Serial.print("Low beams ON\n");
+      WHEELSERIAL.write("LowBeams ON\n");
+      digitalWrite(LOW_BEAM_PIN,lowBeamON);
     }
-}
+    else{
+      Serial.print("Low beams OFF\n");
+      WHEELSERIAL.write("LowBeams OFF\n");
+      digitalWrite(LOW_BEAM_PIN,lowBeamON);
+    }
+    lowBeamTimer.startTimer();
+    lowBeamON=!lowBeamON;
 
-// In loop() - call the beam signal checker
-void loop()
-{
-    // ... existing loop code ...
-
-    checkBeamSignal();
-
-    // ... remaining loop code ...
+  }
+  
+  
+  delay(DEFAULTDELAY);
 }
