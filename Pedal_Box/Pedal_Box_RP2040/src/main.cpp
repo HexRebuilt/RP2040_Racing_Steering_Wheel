@@ -129,3 +129,46 @@ void loop()
 }
 
 #endif
+// LOW_BEAM state monitoring via UART
+// Transmits "LOW_BEAM_ON" or "LOW_BEAM_OFF" every 500ms via Serial1 (WHEELSERIAL)
+
+unsigned long previousBeamMillis = 0;
+bool lastBeamState = LOW_BEAM_ON;
+
+void checkBeamSignal()
+{
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - previousBeamMillis >= 500)
+    {
+        previousBeamMillis = currentMillis;
+
+        bool currentBeamState = LOW_BEAM_ON;
+
+        if (currentBeamState != lastBeamState)
+        {
+            lastBeamState = currentBeamState;
+
+            if (currentBeamState)
+            {
+                // Low-beam is ON - transmit "LOW_BEAM_ON"
+                WHEELSERIAL.write("LOW_BEAM_ON\n");
+            }
+            else
+            {
+                // Low-beam is OFF - transmit "LOW_BEAM_OFF"
+                WHEELSERIAL.write("LOW_BEAM_OFF\n");
+            }
+        }
+    }
+}
+
+// In loop() - call the beam signal checker
+void loop()
+{
+    // ... existing loop code ...
+
+    checkBeamSignal();
+
+    // ... remaining loop code ...
+}
