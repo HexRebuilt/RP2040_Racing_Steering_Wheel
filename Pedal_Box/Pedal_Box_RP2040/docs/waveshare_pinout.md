@@ -12,36 +12,36 @@ This document maps the **D** (display/IO) pin numbers used in the firmware to th
 
 | D # | GP Pin |
 |-----|--------|
-| D0 (p0) | GP0 |
-| D1 (p1) | GP1 |
-| D2 (p#) | GP# |
-| D3 (p15) | GP15 |
+| D0  | GP0 |
+| D1  | GP1 |
+| D2  | GP# |
+| D3  | GP15 |
 | D4 | *Not assigned* |
-| D5 (p17) | GP17 |
-| D6 (p18) | GP18 |
-| D7 (p19) | GP19 |
-| D8 (p20) | GP20 |
-| D9 (p21) | GP21 |
-| D10 (p5) | GP4 |
-| D11 (p7) | GP7 |
-| D12 (p4) | GP4 |
-| D13 (p6) | GP6 |
-| D14 (p26) | GP26 |
-| D15 (p27) | GP27 |
-| D16 (p28) | GP28 |
-| D17 (p29) | GP29 |
-| D18 (p12) | GP12 |
-| D19 (p13) | GP13 |
-| D20 (p2) * | GP2 |
-| D21 (p#) | GP# |
+| D5  | GP17 |
+| D6  | GP18 |
+| D7  | GP19 |
+| D8  | GP20 |
+| D9  | GP21 |
+| D10 | GP5 |
+| D11 | GP7 |
+| D12 | GP4 |
+| D13 | GP6 |
+| D14  | GP26 |
+| D15  | GP27 |
+| D16  | GP28 |
+| D17  | GP29 |
+| D18  | GP12 |
+| D19  | GP13 |
+| D20  | GP2 |
+| D21  | GP# |
 | D22 | *Not assigned* |
 | D23 | *Not assigned* |
-| D24 (p3) | GP3 |
-| D25 (p8) | GP8 |
-| D26 (p9) | GP9 |
-| D27 (p10) | GP10 |
-| D28 (p11) | GP11 |
-| D29 (p14) | GP14 |
+| D24  | GP3 |
+| D25  | GP8 |
+| D26  | GP9 |
+| D27  | GP10 |
+| D28  | GP11 |
+| D29  | GP14 |
 
 ## How to Use in PlatformIO
 

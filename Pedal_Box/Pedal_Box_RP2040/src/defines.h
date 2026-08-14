@@ -30,13 +30,13 @@ Source: https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-01-technica
 #define COPI                        p11
 #define SCK                         p10
 #define ANALOG_OUTPUT_TIME          20  //ms 
-#define ANALOG_OUTPUT_CONFIG_TIME   2000 //ms
+#define ANALOG_OUTPUT_CONFIG_TIME   5000 //ms
 
 #include "buttonIds.h"
 
 #define DEFAULTDELAY    10
 // Low-beam state check
-#define LOW_BEAM_PIN    p29 //GP14
+#define LOW_BEAM_PIN    PIN_A1 //p15 //GP27
 #define LOW_BEAM_UPDATE_FREQUENCY 500
 
 #define AUTOMATIC_VOLUME_MIN_SPEED      50 //kph or whatever savage measure unit you use

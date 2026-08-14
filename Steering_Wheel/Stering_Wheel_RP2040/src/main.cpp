@@ -338,12 +338,13 @@ void loop()
   {
     Serial.println("Volume Encoder pressed");
     volumeEncoder.released();
+    messageOut = String(RPUSH);
   }
   if (menuEncoder.IsPressed())
   {
     Serial.println("Menu Encoder pressed");
     menuEncoder.released();
-    messageOut = String(RPUSH);
+    messageOut = String("CONFIGURATION");
   }
 
   if (timer.timePassed() > MIN_INPUT_DELAY)

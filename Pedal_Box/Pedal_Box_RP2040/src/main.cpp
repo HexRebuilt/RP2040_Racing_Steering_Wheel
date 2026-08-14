@@ -25,7 +25,7 @@ Timer timer, speed_timer, lowBeamTimer;
 String message;
 int lastSpeedVolumeChange = 0;
 
-boolean lowBeamON = false;
+boolean lowBeamON = false, configurationStatus = false;
 
 void cyclePins() {
   // Simple pin cycling: each 10s, set one pin HIGH, print which
@@ -135,7 +135,8 @@ void setup()
   Serial.println("Configuration DONE");
 
   //low beam check
-  pinMode(LOW_BEAM_PIN, INPUT_PULLUP);
+  pinMode(LOW_BEAM_PIN, INPUT_PULLDOWN);
+  //pinMode(LOW_BEAM_PIN, INPUT);
   
   //mapping the fucking pins
   /*
@@ -143,7 +144,16 @@ void setup()
     cyclePins();
     delay(100);
   }*/
-
+ /*
+  bool out=0;
+  pinMode(LOW_BEAM_PIN ,OUTPUT);
+  while(1){
+    digitalWrite(LOW_BEAM_PIN,out);
+    Serial.println(out);
+    out=!out;
+    delay(1500);
+  }
+  */
   speed_timer.startTimer();
 
 }
@@ -170,6 +180,10 @@ void loop()
   {
     Serial.print("Message recieved: ");
     Serial.println(message);
+    if (message.startsWith("CONFIGURATION"))
+    {
+      configurationStatus = !configurationStatus;
+    }
     //analyzing the message
     digitalPotWrite (buttonHandler.convertIDtoPot(message));
     timer.startTimer();
@@ -178,11 +192,15 @@ void loop()
     
   
   //reset pot value after set ammount of time
-  if (timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME)
+  if (timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME && configurationStatus == false)
   {
     digitalPotWrite(0);
   }
-  
+  //config mode
+  if (timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME && configurationStatus == true)
+  {
+    digitalPotWrite(0);
+  }
 
   // GPS reading info
   while (SerialGPS.available())
@@ -218,10 +236,16 @@ void loop()
 
   //check the lowbeam status
   if(lowBeamTimer.timePassed()>= LOW_BEAM_UPDATE_FREQUENCY){
-    lowBeamON = digitalRead(LOW_BEAM_PIN);
-    //Serial.print("LOW_BEAM_LINE: ");
-    //Serial.print(lowBeamON);
+    lowBeamON = !digitalRead(LOW_BEAM_PIN); //on high side of the optocoupler
+    /*
+    Serial.print("LOW_BEAM_LINE: ");
+    Serial.print(lowBeamON);
     Serial.print("\n");
+    
+    pinMode(LOW_BEAM_PIN, INPUT);
+    int readvalue = analogRead(LOW_BEAM_PIN);
+    Serial.println(readvalue);
+    */
     if(lowBeamON){
       Serial.print("Low beams ON\n");
       WHEELSERIAL.write("LowBeams ON\n");
