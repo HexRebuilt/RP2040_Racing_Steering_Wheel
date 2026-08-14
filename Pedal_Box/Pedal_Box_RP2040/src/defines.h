@@ -39,3 +39,5 @@ Source: https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-01-technica
 #define LOW_BEAM_PIN    p29 //GP14
 #define LOW_BEAM_UPDATE_FREQUENCY 500
 
+#define AUTOMATIC_VOLUME_MIN_SPEED      50 //kph or whatever savage measure unit you use
+#define AUTOMATIC_SPEED_DELTA_INCREASE  5 //kph
