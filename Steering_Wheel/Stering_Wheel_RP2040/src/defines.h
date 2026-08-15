@@ -1,8 +1,8 @@
 //Wheel serial defines on UART0
-#define WHEELTX     (0u)
-#define WHEELRX     (1u)
+#define WHEELTX     D4//(0u)
+#define WHEELRX     D5//(1u)
 #define WHEELBAUD   9600
-#define WHEELSERIAL Serial1
+#define WHEELSERIAL Serial2
 
 //steering wheel outputs
 #define MAX_BRIGHT_LEDS 50 //due to power limitations
@@ -48,8 +48,8 @@
 #define I2C_SCL D3
 
 //Encoder pins
-#define VOLUME_ENCODER_CW    D4
-#define VOLUME_ENCODER_DATA  D5
+#define VOLUME_ENCODER_CW    D1//D4
+#define VOLUME_ENCODER_DATA  D0//D5
 #define VOLUME_ENCODER_PRESS D7
 #define MENU_ENCODER_CW      D13
 #define MENU_ENCODER_DATA    D15

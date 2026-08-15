@@ -278,6 +278,10 @@ void loop()
 
   if (messageIn.compareTo("\n")) // something has arrived
   {
+
+    Serial.print("Message recieved: ");
+    Serial.println(messageIn);
+
     // Parse GPS data if message starts with "g."
     if (messageIn.startsWith("g.")) {
       parseGPSData(messageIn);
@@ -294,8 +298,6 @@ void loop()
       Serial.println(gpsSeconds);
       */
     }
-    //Serial.print("Message recieved: ");
-    //Serial.println(messageIn);
 
     if (messageIn.startsWith("LowBeams")){
       //Serial.print("Message recieved: ");

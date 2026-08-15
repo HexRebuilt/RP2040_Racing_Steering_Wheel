@@ -23,14 +23,14 @@
 Source: https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-01-technical-reference
 */
 #define RADIO_MPC4131_ADDRESS       0x00
-#define POT_MIN                     0
+#define POT_MIN                     10
 #define POT_MAX                     127
 #define RADIO_MPC4131_CS            p2 //is gp25
 #define CIPO                        p12
 #define COPI                        p11
 #define SCK                         p10
 #define ANALOG_OUTPUT_TIME          20  //ms 
-#define ANALOG_OUTPUT_CONFIG_TIME   5000 //ms
+#define ANALOG_OUTPUT_CONFIG_TIME   3500 //ms
 
 #include "buttonIds.h"
 

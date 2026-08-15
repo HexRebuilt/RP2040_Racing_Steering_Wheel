@@ -4,7 +4,6 @@
 #include <SPI.h>
 #include <TinyGPS++.h>
 #include <string.h>
-
 #include "defines.h"
 #include "buttonhandler.h"
 #include "buttonIds.h"
@@ -24,6 +23,7 @@ Timer timer, speed_timer, lowBeamTimer;
 //serail uart message to the wheel
 String message;
 int lastSpeedVolumeChange = 0;
+unsigned short buttonID;
 
 boolean lowBeamON = false, configurationStatus = false;
 
@@ -119,6 +119,16 @@ void setup()
   Serial.begin(9600);
   delay(DEFAULTDELAY * 500);
 
+  /*
+  UART testuart(WHEELRX,WHEELTX, NC, NC);
+  testuart.begin(WHEELBAUD);
+  while(1){
+   if (testuart.available()) {
+      char c = testuart.read();
+      Serial.print(c);
+    }
+  }
+  */  
   // starting the serial communication to the wheel on UART0
   WHEELSERIAL.begin(WHEELBAUD);
   Serial.println("Communication to the wheel started...");
@@ -139,6 +149,19 @@ void setup()
   //pinMode(LOW_BEAM_PIN, INPUT);
   
   //mapping the fucking pins
+  /*
+  pinMode(p0,INPUT);
+  pinMode(p1,INPUT);
+  bool status = false;
+  while(1){
+    status = digitalRead(p0);
+    Serial.print("p0=");
+    Serial.print(status);
+    status = digitalRead(p1);
+    Serial.print("\np1=");
+    Serial.println(status);
+    delay(10);
+  }*/
   /*
   while(1){
     cyclePins();
@@ -182,24 +205,31 @@ void loop()
     Serial.println(message);
     if (message.startsWith("CONFIGURATION"))
     {
+      Serial.print("Configuration mode: ");
+      Serial.println(configurationStatus);
       configurationStatus = !configurationStatus;
     }
     //analyzing the message
-    digitalPotWrite (buttonHandler.convertIDtoPot(message));
+    buttonID = buttonHandler.convertIDtoPot(message);
+    digitalPotWrite (buttonID);
     timer.startTimer();
     message = "\n";
   }
     
   
   //reset pot value after set ammount of time
-  if (timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME && configurationStatus == false)
+  if (buttonID != 0 && timer.timePassed() > ANALOG_OUTPUT_TIME && configurationStatus == false)
   {
-    digitalPotWrite(0);
+    Serial.println("Resetting pot output");
+    buttonID = 0;
+    digitalPotWrite((unsigned short) 0);
   }
   //config mode
-  if (timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME && configurationStatus == true)
+  if (buttonID != 0 && timer.timePassed() > ANALOG_OUTPUT_CONFIG_TIME && configurationStatus == true)
   {
-    digitalPotWrite(0);
+    Serial.println("Resetting configuration pot output");
+    buttonID = 0;
+    digitalPotWrite((unsigned short) 0);
   }
 
   // GPS reading info

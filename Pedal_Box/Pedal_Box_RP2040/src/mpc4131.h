@@ -1,7 +1,7 @@
-void digitalPotWrite(unsigned int value)
+void digitalPotWrite(unsigned short value)
 {
-    //Serial.print("POT VALUE: ");
-    //Serial.println(value);
+    Serial.print("POT VALUE: ");
+    Serial.println(value);
     digitalWrite(RADIO_MPC4131_CS, LOW);
     mySPI.transfer(RADIO_MPC4131_ADDRESS);
     mySPI.transfer(value);
